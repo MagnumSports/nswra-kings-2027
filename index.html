@@ -880,7 +880,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
       g.innerHTML='<b>Demo mode.</b> Changes you make here are saved only in this browser, so other visitors still see the published sponsors. To publish them, export the file and replace <code>sponsors.json</code> in the GitHub repository. Sponsorship values stay private: they are left out of the export, because sponsors.json is public. <span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="demo-export">Export sponsors.json</button><button class="sm danger" type="button" id="demo-reset">Reset demo</button></span>';
       $('demo-export').onclick=exportJson;
       $('demo-reset').onclick=function(){var b=this;if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm reset';return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
-      $('adm').hidden=false; wireAdmin(); subscribe(); renderAdmin();
+      $('adm').hidden=false; $('adm').after(g); g.style.margin='32px 0 0'; wireAdmin(); subscribe(); renderAdmin();
     }
     st=load();
     if(st&&st.categories&&st.sponsors){st.assets=st.assets||{};begin();return}
