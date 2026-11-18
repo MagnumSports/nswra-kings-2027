@@ -259,6 +259,17 @@ main{flex:1 0 auto}
 @media (max-width:900px){.hero{min-height:0}.hero-mark{max-width:260px}}
 .map-embed{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);height:clamp(320px,55vh,640px)}
 .map-embed iframe{border:0;width:100%;height:100%;display:block}
+.hero-slides{position:absolute;inset:0;z-index:0}
+.hero-slides .slide{position:absolute;inset:0;margin:0;opacity:0;transition:opacity 1.2s ease}
+.hero-slides .slide.on{opacity:1}
+.hero-slides img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-slides::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,60,.88) 0%,rgba(8,14,60,.7) 45%,rgba(8,14,60,.35) 100%);pointer-events:none}
+.hero-slides figcaption{position:absolute;right:max(clamp(16px,4vw,72px),env(safe-area-inset-right,0px));bottom:12px;z-index:2;font-size:.7rem;color:rgba(255,255,255,.7);text-align:right;max-width:60%}
+.hero > .wrap{position:relative;z-index:1}
+.hero-dots{position:absolute;left:max(clamp(16px,4vw,72px),env(safe-area-inset-left,0px));bottom:14px;z-index:3;display:flex;gap:8px}
+.hero-dots button{width:10px;height:10px;border-radius:50%;border:1px solid #fff;background:transparent;padding:0;cursor:pointer;opacity:.8}
+.hero-dots button[aria-current="true"]{background:var(--gold);border-color:var(--gold);opacity:1}
+@media (max-width:640px){.hero-slides::after{background:rgba(8,14,60,.78)}.hero-slides figcaption{display:none}}
 </style>
 
 </head>
@@ -279,6 +290,7 @@ main{flex:1 0 auto}
       <a href="#news">News</a>
       <a href="#results">Results</a>
       <a href="#contact">Contact</a>
+      <a href="https://www.nswra.org.au/collections/all-products" target="_blank" rel="noopener">NSWRA Shop ↗</a>
       <a href="#admin" id="nav-admin" hidden>Admin</a>
     </nav>
   </div>
@@ -292,6 +304,7 @@ main{flex:1 0 auto}
 <!-- HOME -->
 <section class="view" data-view="home">
   <div class="hero">
+    <div class="hero-slides" aria-roledescription="carousel" aria-label="ANZAC Rifle Range photos"><figure class="slide on"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Anzac_Rifle_Range1.jpg?width=1920" alt="ANZAC Rifle Range, Malabar" decoding="async"><figcaption>ANZAC Rifle Range, Malabar · Photo: Nathan S, public domain, via Wikimedia Commons</figcaption></figure><figure class="slide"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Malabar_Headland_-_Full_Bore_Rifle_Range_1.jpg?width=1920" alt="Full bore range, Malabar Headland" loading="lazy" decoding="async"><figcaption>Full bore range, Malabar Headland · Photo: Paul Clarence, CC BY-SA 3.0, via Wikimedia Commons</figcaption></figure><figure class="slide"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Malabar_Headland_-_Military_Club_Rifle_Range_4.jpg?width=1920" alt="Firing points, ANZAC Rifle Range" loading="lazy" decoding="async"><figcaption>Firing points, ANZAC Rifle Range · Photo: Roy Finney, CC BY-SA 3.0, via Wikimedia Commons</figcaption></figure><figure class="slide"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Malabar_Headland_-_ANZAC_Day_Comp_4.jpg?width=1920" alt="ANZAC Day competition, Malabar" loading="lazy" decoding="async"><figcaption>ANZAC Day competition, Malabar · Photo: Paul Clarence, CC BY-SA 3.0, via Wikimedia Commons</figcaption></figure><figure class="slide"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Malabar_Headland_-_Full_Bore_Rifle_Range_2.jpg?width=1920" alt="Targets on the full bore range" loading="lazy" decoding="async"><figcaption>Targets on the full bore range · Photo: Paul Clarence, CC BY-SA 3.0, via Wikimedia Commons</figcaption></figure><figure class="slide"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Malabar_Headland_-_ANZAC_Rifle_Range_Memorial_Gates_4.jpg?width=1920" alt="ANZAC Memorial Gates" loading="lazy" decoding="async"><figcaption>ANZAC Memorial Gates · Photo: Paul Clarence, CC BY-SA 3.0, via Wikimedia Commons</figcaption></figure><div class="hero-dots"><button type="button" aria-label="Show photo 1" aria-current="true"></button><button type="button" aria-label="Show photo 2"></button><button type="button" aria-label="Show photo 3"></button><button type="button" aria-label="Show photo 4"></button><button type="button" aria-label="Show photo 5"></button><button type="button" aria-label="Show photo 6"></button></div></div>
     <div class="wrap">
       <div>
         <p class="eyebrow">NSW Rifle Association · ANZAC Rifle Range, Malabar</p>
@@ -559,23 +572,23 @@ main{flex:1 0 auto}
 
       <div class="frame-block">
         <div class="frame-bar">
-          <div><h3>NSWRA 150th Annual Open Championships 2026</h3><p class="src">results.nraa.com.au</p></div>
-          <a class="btn ghost" href="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" target="_blank" rel="noopener">Open full results ↗</a>
-        </div>
-        <div class="frame">
-          <div class="fallback"><b>Results didn't load here</b><span>The results site may not allow embedding. Use the button above to open them in a new tab.</span></div>
-          <iframe src="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" title="NSWRA 150th Annual Open Championships 2026 results" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-      </div>
-
-      <div class="frame-block" style="margin-top:44px">
-        <div class="frame-bar">
           <div><h3>NRAA National Rifle Championship · Sporter / F-Std</h3><p class="src">shotslog.com</p></div>
           <a class="btn ghost" href="https://shotslog.com/competitions/nraa-national-rifle-championship-sporter-f-std-1951" target="_blank" rel="noopener">Open on ShotsLog ↗</a>
         </div>
         <div class="frame">
           <div class="fallback"><b>ShotsLog didn't load here</b><span>ShotsLog may not allow embedding. Use the button above to open it in a new tab.</span></div>
           <iframe src="https://shotslog.com/competitions/nraa-national-rifle-championship-sporter-f-std-1951" title="ShotsLog: NRAA National Rifle Championship Sporter F-Std" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+
+      <div class="frame-block" style="margin-top:44px">
+        <div class="frame-bar">
+          <div><h3>NSWRA 150th Annual Open Championships 2026</h3><p class="src">results.nraa.com.au</p></div>
+          <a class="btn ghost" href="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" target="_blank" rel="noopener">Open full results ↗</a>
+        </div>
+        <div class="frame">
+          <div class="fallback"><b>Results didn't load here</b><span>The results site may not allow embedding. Use the button above to open them in a new tab.</span></div>
+          <iframe src="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" title="NSWRA 150th Annual Open Championships 2026 results" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </section>
@@ -889,5 +902,18 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
 })();
 </script>
 
+<script>
+(function(){
+  var box=document.querySelector('.hero-slides'); if(!box) return;
+  var sl=[].slice.call(box.querySelectorAll('.slide')), dots=[].slice.call(box.querySelectorAll('.hero-dots button')), i=0, t;
+  function go(n){ sl[i].classList.remove('on'); dots[i].removeAttribute('aria-current'); i=(n+sl.length)%sl.length; sl[i].classList.add('on'); dots[i].setAttribute('aria-current','true'); var im=sl[i].querySelector('img'); if(im.loading==='lazy') im.loading='eager'; }
+  function start(){ stop(); if(!matchMedia('(prefers-reduced-motion: reduce)').matches) t=setInterval(function(){go(i+1)},6000); }
+  function stop(){ clearInterval(t); }
+  dots.forEach(function(d,n){ d.addEventListener('click',function(){ go(n); start(); }); });
+  sl.slice().forEach(function(f){ f.querySelector('img').addEventListener('error',function(){ var k=sl.indexOf(f); if(k<0||sl.length<2) return; var cur=sl[i]; sl.splice(k,1); dots[k].remove(); dots.splice(k,1); f.remove(); i=Math.max(0,sl.indexOf(cur)); if(cur===f){ i=k%sl.length; sl[i].classList.add('on'); dots[i].setAttribute('aria-current','true'); } }); });
+  document.addEventListener('visibilitychange',function(){ document.hidden?stop():start(); });
+  start();
+})();
+</script>
 </body>
 </html>
