@@ -239,6 +239,24 @@ footer p{opacity:.75}
   .target .flag{transform-origin:0 0;animation:flutter 2.4s ease-in-out infinite}
   @keyframes flutter{50%{transform:skewY(6deg) scaleX(.94)}}
 }
+
+/* full-screen responsive layout */
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+main{flex:1 0 auto}
+.wrap{max-width:none;width:100%;padding-left:max(clamp(16px,4vw,72px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,4vw,72px),env(safe-area-inset-right,0px))}
+.hero{min-height:calc(100vh - 142px);min-height:calc(100dvh - 142px);display:flex;align-items:center}
+.hero h1{font-size:clamp(3rem,7vw,8.5rem)}
+.hero .wrap{padding-block:clamp(40px,7vh,96px)}
+.hero-mark,.target{max-width:clamp(260px,32vw,620px)}
+.hero .lede{max-width:56ch}
+.band{padding-block:clamp(40px,6vw,88px)}
+.head{max-width:80ch}
+.grid3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.disc{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.tiers{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+@media (min-width:1400px){body{font-size:17px}.grid2{gap:48px}}
+@media (min-width:1900px){body{font-size:18px}}
+@media (max-width:900px){.hero{min-height:0}.hero-mark{max-width:260px}}
 </style>
 
 </head>
