@@ -270,6 +270,7 @@ main{flex:1 0 auto}
 .hero-dots button{width:10px;height:10px;border-radius:50%;border:1px solid #fff;background:transparent;padding:0;cursor:pointer;opacity:.8}
 .hero-dots button[aria-current="true"]{background:var(--gold);border-color:var(--gold);opacity:1}
 @media (max-width:640px){.hero-slides::after{background:rgba(8,14,60,.78)}.hero-slides figcaption{display:none}}
+.shop-frame{height:calc(100dvh - 180px);min-height:600px}
 </style>
 
 </head>
@@ -290,7 +291,7 @@ main{flex:1 0 auto}
       <a href="#news">News</a>
       <a href="#results">Results</a>
       <a href="#contact">Contact</a>
-      <a href="https://www.nswra.org.au/collections/all-products" target="_blank" rel="noopener">NSWRA Shop ↗</a>
+      <a href="#shop">NSWRA Shop</a>
       <a href="#admin" id="nav-admin" hidden>Admin</a>
     </nav>
   </div>
@@ -589,6 +590,25 @@ main{flex:1 0 auto}
         <div class="frame">
           <div class="fallback"><b>Results didn't load here</b><span>The results site may not allow embedding. Use the button above to open them in a new tab.</span></div>
           <iframe src="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" title="NSWRA 150th Annual Open Championships 2026 results" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section class="view" data-view="shop" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head"><p class="eyebrow">NSWRA Shop</p><h2>Shop</h2><p>Ammunition, components, range supplies and NSWRA merchandise from the NSW Rifle Association shop at Malabar.</p></div>
+      <div class="frame-block">
+        <div class="frame-bar">
+          <div><h3>NSW Rifle Association Shop</h3><p class="src">nswra.org.au</p></div>
+          <a class="btn ghost" href="https://www.nswra.org.au/collections/all-products" target="_blank" rel="noopener">Open the shop ↗</a>
+        </div>
+        <div class="frame shop-frame">
+          <div class="fallback"><b>The shop didn't load here</b><span>The shop may not allow embedding. Use the button above to open it in a new tab.</span></div>
+          <iframe src="https://www.nswra.org.au/collections/all-products" title="NSW Rifle Association Shop" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </section>
