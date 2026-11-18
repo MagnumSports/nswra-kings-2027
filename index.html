@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NSWRA Kings 2027</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="The 151st NSWRA Annual Open Championships and King's Prize, ANZAC Rifle Range, Malabar NSW. Entries, program, sponsors and results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>[hidden]{display:none!important}
+/* Layout: range-signage header + tabbed views; each view is a single column of bands. Brass = action, flag red = wind/alerts. */
+:root{
+  --bg:#f7f7fc; --surface:#ffffff; --ink:#1a1a26; --muted:#5a5b75; --line:#e5e5ef; --hero:#090c9b; --gold:#f5c518;
+  --navy:#0b1728; --navy-ink:#ffffff; --brass:#090c9b; --brass-ink:#ffffff; --brass-soft:#e9e9f2;
+  --flag:#c2412d; --ring:#1b1f24;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1020; --surface:#161a2e; --ink:#e9e9f5; --muted:#a3a4c0; --line:#272c47; --hero:#090c9b; --gold:#f5c518;
+  --navy:#070c18; --navy-ink:#ffffff; --brass:#9a9dff; --brass-ink:#0b0d2a; --brass-soft:#1d2142;
+  --flag:#e3664f; --ring:#e7ecf1; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1020; --surface:#161a2e; --ink:#e9e9f5; --muted:#a3a4c0; --line:#272c47; --hero:#090c9b; --gold:#f5c518;
+  --navy:#070c18; --navy-ink:#ffffff; --brass:#9a9dff; --brass-ink:#0b0d2a; --brass-soft:#1d2142;
+  --flag:#e3664f; --ring:#e7ecf1; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--navy)}
+a{color:var(--brass)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);line-height:1.05;text-wrap:balance;margin:0}
+h2{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;text-transform:uppercase;letter-spacing:.01em}
+h3{font-size:1.4rem;font-weight:700}
+p{margin:0}
+.eyebrow{font:600 .78rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.14em;color:var(--brass)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.tbc{display:inline-block;font:600 .7rem/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--flag);border:1px solid currentColor;border-radius:3px;padding:.25em .45em;vertical-align:middle;margin-left:.4em}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--navy);color:var(--navy-ink)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;margin-right:auto}
+.brand b{font:800 1.35rem/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase}
+.brand span{font:500 .72rem/1.2 var(--f-body);opacity:.75;display:block;letter-spacing:.06em;text-transform:uppercase}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{color:var(--navy-ink);text-decoration:none;font:600 .95rem/1 var(--f-display);text-transform:uppercase;letter-spacing:.06em;padding:10px 12px;border-bottom:3px solid transparent;white-space:nowrap;opacity:.8}
+nav.tabs a:hover{opacity:1}
+nav.tabs a[aria-current="page"]{opacity:1;border-bottom-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem/1 var(--f-display);text-transform:uppercase;letter-spacing:.08em;padding:14px 22px;border-radius:4px;text-decoration:none;border:2px solid var(--brass);background:var(--brass);color:var(--brass-ink);cursor:pointer}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor}
+.btn:hover{filter:brightness(1.08)}
+
+/* views */
+.view{padding-block:0 72px}
+.band{padding-block:56px}
+.band + .band{border-top:1px solid var(--line)}
+.head{display:grid;gap:10px;align-content:start;margin-bottom:28px;max-width:62ch}
+.head p{color:var(--muted)}
+
+/* hero */
+.hero{background:var(--hero);color:var(--navy-ink);overflow:hidden;position:relative}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:56px 64px}
+.hero h1{font-size:clamp(3rem,8vw,6.2rem);font-weight:800;text-transform:uppercase;letter-spacing:-.005em}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .eyebrow{color:rgba(255,255,255,.75)}
+.hero .btn{background:#fff;border-color:#fff;color:var(--hero)}
+.hero .btn.ghost{background:transparent;color:#fff}
+.hero .lede{font-size:1.15rem;max-width:46ch;opacity:.9;margin-top:18px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.facts{display:flex;gap:28px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.15)}
+.facts div{display:grid;gap:4px}
+.facts dt{font:600 .72rem/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;opacity:.65}
+.facts dd{margin:0;font:600 1.25rem/1.1 var(--f-display);letter-spacing:.02em}
+.target{width:100%;max-width:420px;aspect-ratio:1;justify-self:center}
+.countdown{display:flex;gap:10px;margin-top:22px}
+.countdown div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:4px;padding:10px 12px;min-width:68px;text-align:center}
+.countdown b{display:block;font:500 1.6rem/1 var(--f-mono)}
+.countdown span{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;opacity:.7}
+
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;display:grid;gap:10px;align-content:start;min-width:0}
+.card p{color:var(--muted)}
+.notice{background:var(--brass-soft);border-left:4px solid var(--brass);padding:14px 18px;border-radius:0 4px 4px 0;font-size:.95rem}
+
+/* distances strip */
+.yards{display:flex;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.yards div{flex:1;padding:16px 8px;text-align:center;border-right:1px solid var(--line);min-width:0}
+.yards div:last-child{border-right:0}
+.yards b{display:block;font:700 1.9rem/1 var(--f-display)}
+.yards span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* program */
+.day{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px;padding-block:22px;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:0}
+.day .when b{display:block;font:700 1.5rem/1 var(--f-display);text-transform:uppercase}
+.day .when span{color:var(--muted);font-size:.9rem}
+.day ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.day li{display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:14px;align-items:baseline}
+.day li .t{color:var(--muted)}
+.chip{font:600 .72rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.08em;padding:.35em .6em;border-radius:3px;background:var(--brass-soft);color:var(--ink);white-space:nowrap}
+.chip.fc{background:transparent;border:1px solid var(--line)}
+
+/* tiers */
+.tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:22px;display:grid;gap:12px;align-content:start}
+.tier.lead{border:2px solid var(--brass)}
+.tier .name{font:700 1.5rem/1 var(--f-display);text-transform:uppercase}
+.tier .price{font:500 1rem/1 var(--f-mono);color:var(--muted)}
+.tier ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:.93rem}
+.sponsor-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.slot{border:1px dashed var(--line);border-radius:6px;aspect-ratio:3/2;display:grid;place-items:center;color:var(--muted);font:600 .8rem/1.2 var(--f-body);text-transform:uppercase;letter-spacing:.08em;text-align:center;padding:10px;background:var(--surface)}
+
+/* forms */
+form{display:grid;gap:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:grid;gap:6px;font-weight:600;font-size:.9rem}
+input,select,textarea{font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink);width:100%}
+textarea{min-height:110px;resize:vertical}
+.out{display:grid;gap:10px}
+.out pre{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px;font:.85rem/1.5 var(--f-mono);margin:0;overflow-x:auto}
+
+/* news */
+.news{display:grid;gap:0}
+.post{display:grid;grid-template-columns:130px minmax(0,1fr);gap:24px;padding-block:24px;border-top:1px solid var(--line)}
+.post:first-child{border-top:0}
+.post time{font:500 .85rem/1.4 var(--f-mono);color:var(--muted)}
+.post h3{margin-bottom:8px}
+.post p{color:var(--muted);max-width:65ch}
+
+/* results frames */
+.frame-block{display:grid;gap:14px}
+.frame-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.frame-bar .src{font:500 .82rem/1.3 var(--f-mono);color:var(--muted);word-break:break-all}
+.frame{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);height:min(78vh,820px)}
+.frame iframe{border:0;width:100%;height:100%;display:block;position:relative;z-index:1;background:transparent}
+.frame .fallback{position:absolute;inset:0;display:grid;place-content:center;gap:12px;text-align:center;padding:24px;color:var(--muted)}
+.frame .fallback b{color:var(--ink);font:700 1.3rem/1.1 var(--f-display);text-transform:uppercase}
+
+/* ticker */
+.ticker{background:var(--brass-soft);border-bottom:1px solid var(--line);overflow:hidden;position:relative}
+.ticker .lbl{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:14px;background:var(--brass);color:var(--brass-ink);font:700 .8rem/1 var(--f-display);text-transform:uppercase;letter-spacing:.12em}
+.ticker .track{display:flex;width:max-content;padding-block:10px}
+.ticker .track a{display:inline-flex;align-items:baseline;gap:8px;padding:0 26px;text-decoration:none;color:var(--ink);font:700 1.05rem/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;border-right:1px solid var(--line)}
+.ticker .track a small{font:500 .7rem/1 var(--f-body);color:var(--muted);letter-spacing:.08em}
+@media (prefers-reduced-motion:no-preference){
+  .ticker .track{animation:tick var(--tick-dur,40s) linear infinite}
+  .ticker:hover .track,.ticker:focus-within .track{animation-play-state:paused}
+  @keyframes tick{to{transform:translateX(-50%)}}
+}
+@media (prefers-reduced-motion:reduce){.ticker{overflow-x:auto}}
+.disc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.disc .card{gap:6px}
+.disc .by{font-size:.85rem;color:var(--muted)}
+.disc .by b{display:block;color:var(--ink);font:700 1.25rem/1.15 var(--f-display);text-transform:uppercase;letter-spacing:.03em}
+.disc .by b.open{color:var(--flag)}
+.presented{font-size:.8rem;color:var(--muted);display:block}
+.presented b{color:var(--ink);font-weight:600}
+.wall-item{border:1px solid var(--line);border-radius:6px;aspect-ratio:3/2;display:grid;place-content:center;gap:4px;text-align:center;padding:10px;background:var(--surface);text-decoration:none;color:var(--ink)}
+.wall-item b{font:700 1.15rem/1.1 var(--f-display);text-transform:uppercase;letter-spacing:.04em}
+.wall-item span{font:600 .68rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.wall-item.open{border-style:dashed;color:var(--muted)}
+@media (max-width:900px){.disc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.disc{grid-template-columns:1fr}}
+
+/* crest + admin */
+.crest{display:inline-block;background:url("data:image/webp;base64,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") center/contain no-repeat;flex:none}
+.crest-sm{width:40px;height:46px}
+.crest-lg{position:absolute;left:50%;top:52.5%;width:46%;aspect-ratio:199/233;transform:translate(-50%,-50%);filter:drop-shadow(0 6px 18px rgba(0,0,0,.35))}
+.hero-mark{position:relative;width:100%;max-width:420px;justify-self:center}
+.hero-mark .target{max-width:none}
+.tier .bene{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:.93rem}
+.wall-item img{max-width:100%;max-height:64px;object-fit:contain;justify-self:center}
+.ticker .track a img{height:22px;width:auto;align-self:center}
+.adm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.adm-actions{display:flex;gap:10px;flex-wrap:wrap}
+.adm-msg{font-size:.9rem;color:var(--muted);min-height:1.2em}
+.adm-msg.err{color:var(--flag)}
+.logo-row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:center}
+.logo-prev{aspect-ratio:3/2;border:1px dashed var(--line);border-radius:6px;display:grid;place-items:center;font-size:.8rem;color:var(--muted);background:var(--surface);overflow:hidden}
+.logo-prev img{max-width:90%;max-height:90%;object-fit:contain}
+fieldset.cats{border:1px solid var(--line);border-radius:4px;padding:10px 12px;margin:0}
+fieldset.cats legend{font-weight:600;font-size:.9rem;padding:0 4px}
+#p-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px 14px}
+#p-cats label{display:flex;gap:8px;align-items:center;font-weight:500}
+#p-cats input{width:auto}
+.adm-list{display:grid;gap:8px;margin-top:14px}
+.adm-row{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 14px}
+.adm-row .thumb{height:44px;display:grid;place-items:center;font-size:.7rem;color:var(--muted)}
+.adm-row .thumb img{max-height:44px;max-width:72px;object-fit:contain}
+.adm-row .meta{min-width:0}
+.adm-row .meta b{display:block}
+.adm-row .meta span{font-size:.85rem;color:var(--muted)}
+.adm-row .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.sm{font:600 .8rem/1 var(--f-body);padding:8px 10px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.sm.danger{color:var(--flag);border-color:currentColor}
+@media (max-width:900px){.adm-grid{grid-template-columns:1fr}}
+@media (max-width:640px){.adm-row{grid-template-columns:56px minmax(0,1fr)}.adm-row .acts{grid-column:1/-1;justify-content:flex-start}.logo-row{grid-template-columns:90px minmax(0,1fr)}}
+
+/* contact & footer */
+dl.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 20px;margin:0}
+dl.kv dt{font-weight:600}
+dl.kv dd{margin:0;color:var(--muted)}
+footer{background:var(--navy);color:var(--navy-ink)}
+.concept{background:var(--flag);color:#fff;font:600 .82rem/1.4 var(--f-body)}
+.concept .wrap{padding-block:8px}
+footer .wrap{padding-block:36px;display:flex;gap:24px;justify-content:space-between;flex-wrap:wrap;font-size:.9rem}
+footer p{opacity:.75}
+
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero-mark{max-width:260px;grid-row:1}
+  .tiers{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid3{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .grid2,.row,.tiers{grid-template-columns:1fr}
+  .day,.post{grid-template-columns:1fr;gap:8px}
+  .day li{grid-template-columns:70px minmax(0,1fr)}
+  .day li .chip{grid-column:2;justify-self:start}
+  .yards b{font-size:1.4rem}
+  .brand div span{display:none}
+  .crest-sm{width:32px;height:37px}
+  .top .wrap{gap:4px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .target .flag{transform-origin:0 0;animation:flutter 2.4s ease-in-out infinite}
+  @keyframes flutter{50%{transform:skewY(6deg) scaleX(.94)}}
+}
+</style>
+
+</head>
+<body>
+<div class="concept" role="note"><div class="wrap">Concept preview for the NSW Rifle Association. This is not the official NSWRA website. Forms here don't send anything.</div></div>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home">
+      <span class="crest crest-sm" role="img" aria-label="NSW Rifle Association crest"></span>
+      <div><b>NSWRA Kings 2027</b><span>151st Annual Open Championships · 21–25 Jan 2027</span></div>
+    </a>
+    <nav class="tabs" aria-label="Main">
+      <a href="#home">Home</a>
+      <a href="#program">Program</a>
+      <a href="#venue">Venue</a>
+      <a href="#enter">Enter</a>
+      <a href="#sponsors">Sponsors</a>
+      <a href="#news">News</a>
+      <a href="#results">Results</a>
+      <a href="#contact">Contact</a>
+      <a href="#admin" id="nav-admin" hidden>Admin</a>
+    </nav>
+  </div>
+</header>
+<div class="ticker" aria-label="Championship sponsors">
+  <span class="lbl">Sponsors</span>
+  <div class="track" id="ticker"></div>
+</div>
+
+<main>
+<!-- HOME -->
+<section class="view" data-view="home">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">NSW Rifle Association · ANZAC Rifle Range, Malabar</p>
+        <h1 style="margin-top:14px">Shoot for the <em>King's</em> Prize</h1>
+        <p class="lede">The 151st NSWRA Annual Open Championships bring Australia's best fullbore target rifle and F-Class shooters to Sydney's historic Malabar range for a week of individual and teams matches, ending with the King's Prize final.</p>
+        <div class="ctas">
+          <a class="btn" href="https://www.nswra.com.au/events/368675" target="_blank" rel="noopener">Register now ↗</a>
+          <a class="btn ghost" href="#sponsors">Become a sponsor</a>
+        </div>
+        <div class="countdown" id="countdown" aria-label="Countdown to opening day (provisional)"></div>
+        <dl class="facts">
+          <div><dt>Dates</dt><dd>21–25 Jan 2027</dd></div>
+          <div><dt>Venue</dt><dd>Malabar, Sydney</dd></div>
+          <div><dt>Disciplines</dt><dd>TR · F-Class · F-Std · SPC</dd></div>
+        </dl>
+      </div>
+      <div class="hero-mark"><svg class="target" viewBox="0 0 400 400" role="img" aria-label="Target face with a wind flag">
+        <circle cx="200" cy="210" r="165" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="2"/>
+        <circle cx="200" cy="210" r="130" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="2"/>
+        <circle cx="200" cy="210" r="95" fill="currentColor" fill-opacity=".12"/>
+        <circle cx="200" cy="210" r="62" fill="none" stroke="var(--hero)" stroke-width="2"/>
+        <circle cx="200" cy="210" r="30" fill="none" stroke="var(--hero)" stroke-width="2"/>
+        <circle cx="200" cy="210" r="11" fill="var(--gold)"/>
+        <g fill="var(--flag)"><circle cx="205" cy="204" r="4"/><circle cx="194" cy="215" r="4"/><circle cx="210" cy="219" r="4"/><circle cx="198" cy="200" r="4"/></g>
+        <g transform="translate(330 40)">
+          <rect x="-2" y="0" width="4" height="120" fill="currentColor" fill-opacity=".6"/>
+          <path class="flag" d="M2 4 L60 14 L60 30 L2 40 Z" fill="var(--flag)"/>
+          <path class="flag" d="M2 4 L60 14 L60 30 L2 40 Z" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+        </g>
+        <text x="200" y="395" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="currentColor" fill-opacity=".7">50.7v · 800 m</text>
+      </svg><span class="crest crest-lg" role="img" aria-label="NSW Rifle Association crest"></span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="band">
+      <div class="head">
+        <p class="eyebrow">About the meeting</p>
+        <h2>A championship with 150 meetings behind it</h2>
+        <p>The NSWRA Open Championships have run since the nineteenth century. In June 2026 the Association marked its 150th meeting at Malabar. The 2027 meeting, the J G McIntosh Championships, opens the next 150, with the King's Prize as its centrepiece.</p>
+      </div>
+      <div class="grid3">
+        <div class="card"><p class="eyebrow">Individual</p><h3>The King's Prize</h3><p>Three stages across the week. The top shooters from the qualifying stages go through to the final, shot at long range under championship conditions.</p></div>
+        <div class="card"><p class="eyebrow">Teams</p><h3>State and club teams</h3><p>Teams matches bring states, clubs and visiting teams onto the same firing points. Team entries are made online before the matches.</p></div>
+        <div class="card"><p class="eyebrow">Open to all</p><h3>Newcomers welcome</h3><p>Target Rifle, F-Open, F-TR, F-Standard and SPC classes run in grades, so a first-time competitor shoots against people at their own level.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="head">
+        <p class="eyebrow">On the range</p>
+        <h2>Distances shot at Malabar</h2>
+        <p>Matches are shot at standard fullbore distances. Exact distances per stage will be published with the official program.</p>
+      </div>
+      <div class="yards" aria-label="Distances">
+        <div><b class="mono">300</b><span>metres</span></div>
+        <div><b class="mono">400</b><span>metres</span></div>
+        <div><b class="mono">500</b><span>metres</span></div>
+        <div><b class="mono">600</b><span>metres</span></div>
+        <div><b class="mono">700</b><span>metres</span></div>
+        <div><b class="mono">800</b><span>metres</span></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="grid2">
+        <div class="card"><p class="eyebrow">Shooters</p><h3>Entries are open</h3><p>Register through NSWRA by 11:55 pm on Monday 18 January 2027. Entries are limited to the number of targets available.</p><p><a class="btn" href="#enter">How to enter</a></p></div>
+        <div class="card"><p class="eyebrow">Partners</p><h3>Put your brand on the firing line</h3><p>Hunting, optics and outdoor brands reach hundreds of serious competitors and their families across the week. Packages start at supporter level.</p><p><a class="btn ghost" href="#sponsors">See packages</a></p></div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section class="view" data-view="program" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head">
+        <p class="eyebrow">Program</p>
+        <h2>Week at a glance</h2>
+        <p>The meeting runs over five days, Thursday 21 to Monday 25 January 2027. Match order and start times below are a draft until NSWRA publishes the official program.</p>
+      </div>
+      <p class="notice"><b>Draft program.</b> Dates are confirmed. Match order and times are placeholders until the official program is released.</p>
+      <div style="margin-top:12px">
+        <div class="day"><div class="when"><b>Day 1</b><span>Thu 21 Jan</span></div>
+          <ul><li><span class="t mono">07:30</span><span>Registration and squadding opens at the NSWRA office</span><span class="chip fc">Admin</span></li>
+              <li><span class="t mono">08:30</span><span data-match="tr">Opening matches, short range</span><span class="chip">TR + F</span></li>
+              <li><span class="t mono">14:00</span><span data-match="teams">Teams match</span><span class="chip">Teams</span></li></ul></div>
+        <div class="day"><div class="when"><b>Day 2</b><span>Fri 22 Jan</span></div>
+          <ul><li><span class="t mono">08:00</span><span data-match="tr">Individual matches, short and mid range</span><span class="chip">TR + F</span></li>
+              <li><span class="t mono">13:30</span><span data-match="kings">King's Prize Stage 1</span><span class="chip">King's</span></li></ul></div>
+        <div class="day"><div class="when"><b>Day 3</b><span>Sat 23 Jan</span></div>
+          <ul><li><span class="t mono">08:00</span><span data-match="kings">King's Prize Stage 2</span><span class="chip">King's</span></li>
+              <li><span class="t mono">13:30</span><span data-match="fopen">F-Class individual matches</span><span class="chip fc">F-Class</span></li>
+              <li><span class="t mono">15:30</span><span data-match="sporter">Sporter / F-Standard match</span><span class="chip fc">Sporter</span></li>
+              <li><span class="t mono">18:30</span><span>Sponsors' and competitors' evening</span><span class="chip fc">Social</span></li></ul></div>
+        <div class="day"><div class="when"><b>Day 4</b><span>Sun 24 Jan</span></div>
+          <ul><li><span class="t mono">08:00</span><span data-match="ftr">Long-range individual matches</span><span class="chip">TR + F</span></li>
+              <li><span class="t mono">13:30</span><span data-match="teams">Teams matches</span><span class="chip">Teams</span></li></ul></div>
+        <div class="day"><div class="when"><b>Day 5</b><span>Mon 25 Jan</span></div>
+          <ul><li><span class="t mono">08:00</span><span data-match="kings">King's Prize Final</span><span class="chip">King's</span></li>
+              <li><span class="t mono">12:00</span><span data-match="grand">Grand Aggregate closes</span><span class="chip">TR + F</span></li>
+              <li><span class="t mono">15:00</span><span>Prize-giving and chairing of the King's Prize winner</span><span class="chip fc">Ceremony</span></li></ul></div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- VENUE -->
+<section class="view" data-view="venue" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head">
+        <p class="eyebrow">Venue</p>
+        <h2>ANZAC Rifle Range, Malabar</h2>
+        <p>The range has been in use since 1855 and is the home of the NSW Rifle Association. It sits on the Malabar Headland in Sydney's eastern suburbs, about 30 minutes from Sydney Airport and the CBD.</p>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Getting there</h3>
+          <dl class="kv">
+            <dt>Address</dt><dd>Franklin Street, Malabar NSW 2036</dd>
+            <dt>By car</dt><dd>Via Anzac Parade, then Franklin Street. Competitor parking is behind the firing points.</dd>
+            <dt>Public transport</dt><dd>Buses run along Anzac Parade to Malabar. Check Transport for NSW for current routes.</dd>
+            <dt>Flying in</dt><dd>Sydney Airport is about 12 km away.</dd>
+          </dl>
+          <p><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=ANZAC+Rifle+Range+Franklin+Street+Malabar+NSW" target="_blank" rel="noopener">Open in Google Maps</a></p>
+        </div>
+        <div class="card">
+          <h3>On site</h3>
+          <dl class="kv">
+            <dt>Range</dt><dd>Fullbore range for 300 m to 800 m, with additional long-range distances published per match</dd>
+            <dt>Office</dt><dd>NSWRA office for entries, squadding and results</dd>
+            <dt>Food</dt><dd>Canteen details to be confirmed <span class="tbc">TBC</span></dd>
+            <dt>Accommodation</dt><dd>Booking details will be released with entries. Book early, as the 2026 meeting closed accommodation a week before entries.</dd>
+            <dt>Spectators</dt><dd>Welcome behind the firing line. Follow range officers' directions at all times.</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ENTER -->
+<section class="view" data-view="enter" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="grid2">
+        <div class="head" style="margin:0">
+          <p class="eyebrow">Entries</p>
+          <h2>Enter the 2027 Championships</h2>
+          <p>Entries are made through the NSWRA website and are limited to the number of targets available. Registration closes at 11:55 pm on Monday 18 January 2027.</p>
+          <dl class="kv" style="margin-top:12px">
+            <dt>Who can enter</dt><dd>Members of an NRAA-affiliated association with a current licence for the class shot</dd>
+            <dt>Classes</dt><dd>Target Rifle (A, B, C), F-Open, F-TR, F-Standard (A, B), SPC / SPCO</dd>
+            <dt>Entry fees</dt><dd>See the <a href="https://cdn.revolutionise.com.au/cups/nswra/files/vwa3owtgbybxpv9x.pdf" target="_blank" rel="noopener">entry, teams and accommodation costs (PDF)</a></dd>
+            <dt>Entries close</dt><dd>Mon 18 Jan 2027, 11:55 pm</dd>
+            <dt>Team entries</dt><dd>Online before each teams match</dd>
+          </dl>
+          <p style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="https://www.nswra.com.au/events/368675" target="_blank" rel="noopener">Register on nswra.com.au ↗</a></p>
+        </div>
+        <div class="card">
+          <h3>Register your interest</h3>
+          <form id="interest" novalidate>
+            <div class="row">
+              <label for="i-name">Full name<input id="i-name" name="name" required autocomplete="name"></label>
+              <label for="i-email">Email<input id="i-email" name="email" type="email" required autocomplete="email"></label>
+            </div>
+            <div class="row">
+              <label for="i-club">Club / association<input id="i-club" name="club"></label>
+              <label for="i-class">Class<select id="i-class" name="class"><option>Target Rifle</option><option>F-Open</option><option>F-TR</option><option>F-Standard</option><option>SPC / SPCO</option><option>Not sure yet</option></select></label>
+            </div>
+            <label for="i-notes">Anything we should know?<textarea id="i-notes" name="notes" placeholder="First championship, team entry, accommodation needs…"></textarea></label>
+            <button class="btn" type="submit">Register interest</button>
+          </form>
+          <div class="out" id="interest-out" hidden></div>
+        </div>
+      </div>
+    </section>
+    <section class="band">
+      <div class="head"><p class="eyebrow">Official event page</p><h2>Register with NSWRA</h2><p>Registration, payment and team entries are handled on the NSWRA website. NSWRA's site can't be shown inside other websites, so it opens in a new tab.</p></div>
+      <div class="grid2">
+        <div class="card"><h3>NSW 151st Annual Open Championships: J G McIntosh | Kings 2027</h3><p>Thu 21 Jan 2027, 9:00 am to Mon 25 Jan 2027, 5:00 pm · ANZAC Rifle Range, Franklin St, Malabar NSW 2036</p><p><a class="btn" href="https://www.nswra.com.au/events/368675" target="_blank" rel="noopener">Open the event page ↗</a></p></div>
+        <div class="card"><h3>Event documents</h3>
+          <p><a href="https://cdn.revolutionise.com.au/cups/nswra/files/wzlfq2xignef2ule.pdf" target="_blank" rel="noopener">Event flyer (PDF)</a></p>
+          <p><a href="https://cdn.revolutionise.com.au/cups/nswra/files/vwa3owtgbybxpv9x.pdf" target="_blank" rel="noopener">Competition entry, teams registration and accommodation costs (PDF)</a></p>
+          <p><a href="https://cdn.revolutionise.com.au/cups/nswra/files/rlryhik2adtns1gc.pdf" target="_blank" rel="noopener">General information (PDF)</a></p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- NSWRA event frame (appended to Enter) -->
+<!-- SPONSORS -->
+<section class="view" data-view="sponsors" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head">
+        <p class="eyebrow">Sponsorship</p>
+        <h2>Partner with the King's Prize</h2>
+        <p>Competitors at the Championships are committed, well-equipped shooters who buy rifles, optics, ammunition and components. A partnership puts your brand in front of them for a full week, on the range and online.</p>
+      </div>
+      <div class="tiers" id="tiers"></div>
+
+      <div class="band" style="padding-bottom:0">
+        <div class="head"><p class="eyebrow">2027 partners</p><h3>Our partners</h3><p>Partners will be listed here as they are confirmed.</p></div>
+        <div class="sponsor-wall" id="wall"></div>
+      </div>
+      <div class="band" style="padding-bottom:0">
+        <div class="head"><p class="eyebrow">Match and discipline sponsors</p><h3>Every match has a name on it</h3><p>Each discipline and feature match can carry its own sponsor, shown on the program, the results and at prize-giving. Matches marked available are open for partnership.</p></div>
+        <div class="disc" id="disc"></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="grid2">
+        <div class="head" style="margin:0">
+          <p class="eyebrow">Enquiries</p>
+          <h2>Talk to us about sponsoring</h2>
+          <p>Tell us a little about your business and what you'd like from a partnership. We'll come back with a tailored package, including in-kind prize options.</p>
+        </div>
+        <div class="card">
+          <form id="sponsor" novalidate>
+            <div class="row">
+              <label for="s-name">Your name<input id="s-name" name="name" required autocomplete="name"></label>
+              <label for="s-org">Business<input id="s-org" name="business" required autocomplete="organization"></label>
+            </div>
+            <div class="row">
+              <label for="s-email">Email<input id="s-email" name="email" type="email" required autocomplete="email"></label>
+              <label for="s-tier">Interested in<select id="s-tier" name="tier"><option>King's Prize Partner</option><option>Match Partner</option><option>Range Partner</option><option>Supporter / prizes in kind</option><option>Not sure</option></select></label>
+            </div>
+            <label for="s-msg">Message<textarea id="s-msg" name="message" placeholder="What would you like to achieve from the partnership?"></textarea></label>
+            <button class="btn" type="submit">Send enquiry</button>
+          </form>
+          <div class="out" id="sponsor-out" hidden></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="view" data-view="news" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head"><p class="eyebrow">News</p><h2>Updates</h2><p>Announcements about entries, the program and partners.</p></div>
+      <div class="news">
+        <article class="post"><time datetime="2026-11-18">18 Nov 2026</time><div><h3>Entries open for Kings 2027</h3><p>The 151st Annual Open Championships, the J G McIntosh Championships, run at Malabar from 21 to 25 January 2027. Registration closes at 11:55 pm on Monday 18 January.</p><p style="margin-top:8px"><a href="#enter">How to enter</a></p></div></article>
+        <article class="post"><time datetime="2026-06-28">28 Jun 2026</time><div><h3>150th Open Championships complete</h3><p>The commemorative 150th meeting ran at Malabar from 24 to 28 June 2026. Full results are on the Results tab.</p><p style="margin-top:8px"><a href="#results">View 2026 results</a></p></div></article>
+        <article class="post"><time datetime="2026-11-18">Coming soon</time><div><h3>Sponsorship packages for 2027</h3><p>Naming, match, range and supporter packages are now open for enquiry. Early partners get the widest exposure across the build-up.</p><p style="margin-top:8px"><a href="#sponsors">See packages</a></p></div></article>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="view" data-view="results" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head"><p class="eyebrow">Results</p><h2>Results</h2><p>2027 results will be posted live during the meeting. Until then, here are the 2026 Championship results and the ShotsLog national competition.</p></div>
+
+      <div class="frame-block">
+        <div class="frame-bar">
+          <div><h3>NSWRA 150th Annual Open Championships 2026</h3><p class="src">results.nraa.com.au</p></div>
+          <a class="btn ghost" href="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" target="_blank" rel="noopener">Open full results ↗</a>
+        </div>
+        <div class="frame">
+          <div class="fallback"><b>Results didn't load here</b><span>The results site may not allow embedding. Use the button above to open them in a new tab.</span></div>
+          <iframe src="https://results.nraa.com.au/nswra-150th-annual-open-championships-2026-results/" title="NSWRA 150th Annual Open Championships 2026 results" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+
+      <div class="frame-block" style="margin-top:44px">
+        <div class="frame-bar">
+          <div><h3>NRAA National Rifle Championship · Sporter / F-Std</h3><p class="src">shotslog.com</p></div>
+          <a class="btn ghost" href="https://shotslog.com/competitions/nraa-national-rifle-championship-sporter-f-std-1951" target="_blank" rel="noopener">Open on ShotsLog ↗</a>
+        </div>
+        <div class="frame">
+          <div class="fallback"><b>ShotsLog didn't load here</b><span>ShotsLog may not allow embedding. Use the button above to open it in a new tab.</span></div>
+          <iframe src="https://shotslog.com/competitions/nraa-national-rifle-championship-sporter-f-std-1951" title="ShotsLog: NRAA National Rifle Championship Sporter F-Std" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="view" data-view="contact" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="grid2">
+        <div class="head" style="margin:0">
+          <p class="eyebrow">Contact</p>
+          <h2>Get in touch</h2>
+          <p>For entries, accommodation, squadding or sponsorship, contact the NSW Rifle Association office.</p>
+        </div>
+        <div class="card">
+          <dl class="kv">
+            <dt>Office</dt><dd>NSW Rifle Association</dd>
+            <dt>Phone</dt><dd class="mono">(02) 9661 4532</dd>
+            <dt>Post</dt><dd>PO Box 386, Maroubra NSW 2035</dd>
+            <dt>Range</dt><dd>ANZAC Rifle Range, Franklin Street, Malabar NSW 2036</dd>
+            <dt>Web</dt><dd><a href="https://nswra.com.au" target="_blank" rel="noopener">nswra.com.au</a></dd>
+            <dt>Email</dt><dd>admin@nswra.com.au</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+<!-- ADMIN -->
+<section class="view" data-view="admin" hidden>
+  <div class="wrap">
+    <section class="band">
+      <div class="head"><p class="eyebrow">Admin</p><h2>Sponsor manager</h2><p>Add sponsor categories and sponsors, and upload brand logos. Changes show on the site straight away for everyone.</p></div>
+      <p class="notice" id="adm-gate">Checking your access…</p>
+      <div id="adm" hidden>
+        <div class="adm-grid">
+          <div class="card">
+            <h3 id="cat-form-title">New category</h3>
+            <form id="cat-form" novalidate>
+              <input type="hidden" id="c-id">
+              <div class="row">
+                <label for="c-name">Name<input id="c-name" required placeholder="e.g. Sporter Match Partner"></label>
+                <label for="c-group">Type<select id="c-group"><option value="tier">Sponsorship tier</option><option value="match">Match or discipline</option></select></label>
+              </div>
+              <div class="row">
+                <label for="c-price">Price or note<input id="c-price" placeholder="From $1,500"></label>
+                <label for="c-order">Display order<input id="c-order" type="number" value="10"></label>
+              </div>
+              <label for="c-blurb">Description (match) or benefits, one per line (tier)<textarea id="c-blurb"></textarea></label>
+              <div class="adm-actions"><button class="btn" type="submit">Save category</button><button class="btn ghost" type="button" id="c-reset">Clear</button></div>
+              <p class="adm-msg" id="c-msg" role="status"></p>
+            </form>
+          </div>
+          <div class="card">
+            <h3 id="sp-form-title">New sponsor</h3>
+            <form id="sp-form" novalidate>
+              <input type="hidden" id="p-id"><input type="hidden" id="p-logo">
+              <div class="row">
+                <label for="p-name">Brand name<input id="p-name" required></label>
+                <label for="p-url">Website<input id="p-url" type="url" placeholder="https://"></label>
+              </div>
+              <div class="logo-row">
+                <div class="logo-prev" id="p-prev">No logo</div>
+                <label for="p-file">Brand logo (PNG, JPG, SVG)<input id="p-file" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
+              </div>
+              <fieldset class="cats"><legend>Categories</legend><div id="p-cats"></div></fieldset>
+              <label for="p-order">Display order<input id="p-order" type="number" value="10"></label>
+              <div class="adm-actions"><button class="btn" type="submit">Save sponsor</button><button class="btn ghost" type="button" id="p-reset">Clear</button></div>
+              <p class="adm-msg" id="p-msg" role="status"></p>
+            </form>
+          </div>
+        </div>
+        <div class="band" style="padding-bottom:0">
+          <h3>Sponsors</h3>
+          <div class="adm-list" id="sp-list"></div>
+        </div>
+        <div class="band" style="padding-bottom:0">
+          <h3>Categories</h3>
+          <div class="adm-list" id="cat-list"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="font-family:var(--f-display);text-transform:uppercase;letter-spacing:.06em">NSWRA Kings 2027</b><p>151st Annual Open Championships · ANZAC Rifle Range, Malabar</p></div>
+    <p>Concept preview. Not an official NSWRA site. Details marked TBC are provisional until confirmed by the NSW Rifle Association.</p>
+  </div>
+</footer>
+
+<script>
+/* Sponsor data. On the hosted preview, categories and sponsors come from the shared store and are edited on the Admin tab.
+   Anywhere else (e.g. site.html on your own host) the page uses the defaults below: edit them by hand. */
+var DEFAULT_CATEGORIES=[
+  {id:'naming', group:'tier', name:"King's Prize Partner", price:'One available · POA', order:1, blurb:"Naming rights to the King's Prize Final\nLogo on all entry, results and prize materials\nPresenting the trophy at prize-giving\nTrade site at the firing line\nFeature article and social posts"},
+  {id:'gold',   group:'tier', name:'Match Partner',  price:'From $X,XXX (TBC)', order:2, blurb:'Naming rights to a match or aggregate\nLogo on results pages for that match\nTrade site at the range\nSocial media mentions'},
+  {id:'silver', group:'tier', name:'Range Partner',  price:'From $X,XXX (TBC)', order:3, blurb:'Banner at the firing points\nLogo on this website\nProduct in competitor packs'},
+  {id:'bronze', group:'tier', name:'Supporter',      price:'From $XXX or prizes in kind', order:4, blurb:'Name on this website and the program\nPrize acknowledgement at prize-giving'},
+  {id:'kings',  group:'match', name:"King's Prize", order:10, blurb:'Three stages and a final, ending with the chairing of the winner.'},
+  {id:'tr',     group:'match', name:'Target Rifle', order:11, blurb:'Sling-and-jacket fullbore with aperture sights, graded A, B and C.'},
+  {id:'fopen',  group:'match', name:'F-Open', order:12, blurb:'Scoped rifles shot from a front rest, open calibre.'},
+  {id:'ftr',    group:'match', name:'F-TR', order:13, blurb:'Scoped .308 or .223 rifles shot from a bipod.'},
+  {id:'sporter',group:'match', name:'F-Standard / SPC', order:14, blurb:'Factory-style and service-pattern rifles. A great first step for hunters moving into target shooting.'},
+  {id:'teams',  group:'match', name:'Teams matches', order:15, blurb:'State, club and invitational teams on the same firing points.'},
+  {id:'grand',  group:'match', name:'Grand Aggregate', order:16, blurb:'The best overall score across the week, by class.'}
+];
+var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…', logo:'', logoUrl:'logos/acme.png', cats:['gold','tr'], order:1} */ ];
+
+(function(){
+  var CATS=DEFAULT_CATEGORIES.slice(), SPONS=DEFAULT_SPONSORS.slice(), db=null, assets=null, live={cats:false,spons:false};
+  function $(id){return document.getElementById(id)}
+  function esc(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML}
+  function byOrder(a,b){return (a.order||0)-(b.order||0)||String(a.name).localeCompare(b.name)}
+  function logoSrc(s){return s.logo?'/_blob/'+s.logo:(s.logoUrl||'')}
+  function catById(id){return CATS.filter(function(c){return c.id===id})[0]}
+  function tierOf(s){var t=(s.cats||[]).map(catById).filter(function(c){return c&&c.group==='tier'}).sort(byOrder);return t[0]}
+  function sponsorsIn(id){return SPONS.filter(function(s){return (s.cats||[]).indexOf(id)>=0}).sort(byOrder)}
+  function link(s,inner,cls){return '<a class="'+(cls||'')+'" href="'+(s&&s.url?esc(s.url)+'" target="_blank" rel="noopener':'#sponsors')+'">'+inner+'</a>'}
+  function logoOrName(s,h){var src=logoSrc(s);return src?'<img src="'+esc(src)+'" alt="'+esc(s.name)+'" loading="lazy">':'<b>'+esc(s.name)+'</b>'}
+
+  function render(){
+    CATS.sort(byOrder); SPONS.sort(byOrder);
+    var tiers=CATS.filter(function(c){return c.group==='tier'}), matches=CATS.filter(function(c){return c.group==='match'});
+    // ticker
+    var items=[];
+    SPONS.forEach(function(s){var t=tierOf(s);items.push(link(s,(logoSrc(s)?'<img src="'+esc(logoSrc(s))+'" alt="">':'')+esc(s.name)+'<small>'+esc(t?t.name:'Partner')+'</small>'))});
+    matches.forEach(function(m){var s=sponsorsIn(m.id)[0]; if(s) items.push(link(s,esc(m.name)+'<small>presented by '+esc(s.name)+'</small>'))});
+    if(!items.length) items=tiers.map(function(t){return '<a href="#sponsors">'+esc(t.name)+'<small>available</small></a>'});
+    var tk=$('ticker'); tk.innerHTML=items.join('')+items.join('');
+    [].slice.call(tk.children).slice(items.length).forEach(function(a){a.setAttribute('aria-hidden','true');a.tabIndex=-1});
+    tk.style.setProperty('--tick-dur',Math.max(25,items.length*5)+'s');
+    // tier cards
+    $('tiers').innerHTML=tiers.map(function(t,i){var b=String(t.blurb||'').split('\n').filter(Boolean);return '<div class="tier'+(i===0?' lead':'')+'"><p class="name">'+esc(t.name)+'</p>'+(t.price?'<p class="price">'+esc(t.price)+'</p>':'')+(b.length?'<ul class="bene">'+b.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'')+'</div>'}).join('');
+    // partner wall
+    $('wall').innerHTML=SPONS.slice().sort(function(a,b){var ta=tierOf(a),tb=tierOf(b);return ((ta?ta.order:99)-(tb?tb.order:99))||byOrder(a,b)}).map(function(s){var t=tierOf(s);return link(s,logoOrName(s)+'<span>'+esc(t?t.name:'Partner')+'</span>','wall-item')}).join('')+'<a class="wall-item open" href="#sponsors"><b>Your brand</b><span>Enquire below</span></a>';
+    // match & discipline cards
+    $('disc').innerHTML=matches.map(function(m){var ss=sponsorsIn(m.id);return '<div class="card"><h3>'+esc(m.name)+'</h3><p>'+esc(m.blurb||'')+'</p><p class="by">Presented by'+(ss.length?ss.map(function(s){return '<b>'+esc(s.name)+'</b>'}).join(''):'<b class="open">Available to sponsor</b>')+'</p></div>'}).join('');
+    // program "presented by" lines
+    [].slice.call(document.querySelectorAll('[data-match]')).forEach(function(el){var old=el.querySelector('.presented');if(old)old.remove();var s=sponsorsIn(el.dataset.match)[0];if(s){var p=document.createElement('span');p.className='presented';p.innerHTML='Presented by <b>'+esc(s.name)+'</b>';el.appendChild(p)}});
+    renderAdmin();
+  }
+
+  /* ---------- admin ---------- */
+  function msg(id,t,err){var m=$(id);m.textContent=t;m.className='adm-msg'+(err?' err':'')}
+  function errText(e){return (e&&(e.message||e.code))||'Something went wrong. Try again.'}
+  function slug(t){var b=String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'item',id=b,n=2;while(catById(id))id=b+'-'+(n++);return id}
+  function renderAdmin(){
+    if($('adm').hidden) return;
+    var checked=[].slice.call(document.querySelectorAll('#p-cats input:checked')).map(function(i){return i.value});
+    $('p-cats').innerHTML=CATS.map(function(c){return '<label><input type="checkbox" value="'+esc(c.id)+'"'+(checked.indexOf(c.id)>=0?' checked':'')+'> '+esc(c.name)+'</label>'}).join('');
+    $('sp-list').innerHTML=SPONS.length?SPONS.map(function(s){var src=logoSrc(s);return '<div class="adm-row"><div class="thumb">'+(src?'<img src="'+esc(src)+'" alt="">':'No logo')+'</div><div class="meta"><b>'+esc(s.name)+'</b><span>'+esc((s.cats||[]).map(function(id){var c=catById(id);return c?c.name:null}).filter(Boolean).join(' · ')||'No category')+'</span></div><div class="acts"><button class="sm" data-act="edit-sp" data-id="'+esc(s.id)+'">Edit</button><button class="sm danger" data-act="del-sp" data-id="'+esc(s.id)+'">Delete</button></div></div>'}).join(''):'<p class="notice">No sponsors yet. Add the first one with the form above.</p>';
+    $('cat-list').innerHTML=CATS.map(function(c){var n=sponsorsIn(c.id).length;return '<div class="adm-row"><div class="thumb">'+(c.group==='tier'?'Tier':'Match')+'</div><div class="meta"><b>'+esc(c.name)+'</b><span>'+n+' sponsor'+(n===1?'':'s')+(c.price?' · '+esc(c.price):'')+'</span></div><div class="acts"><button class="sm" data-act="edit-cat" data-id="'+esc(c.id)+'">Edit</button><button class="sm danger" data-act="del-cat" data-id="'+esc(c.id)+'">Delete</button></div></div>'}).join('');
+  }
+  function resetCat(){$('cat-form').reset();$('c-id').value='';$('cat-form-title').textContent='New category'}
+  function resetSp(){$('sp-form').reset();$('p-id').value='';$('p-logo').value='';$('p-prev').textContent='No logo';$('sp-form-title').textContent='New sponsor';[].slice.call(document.querySelectorAll('#p-cats input')).forEach(function(i){i.checked=false});renderAdmin()}
+
+  function wireAdmin(){
+    $('c-reset').onclick=function(){resetCat();msg('c-msg','')};
+    $('p-reset').onclick=function(){resetSp();msg('p-msg','')};
+    $('cat-form').addEventListener('submit',function(e){
+      e.preventDefault(); var name=$('c-name').value.trim(); if(!name){msg('c-msg','Give the category a name.',true);$('c-name').focus();return}
+      var id=$('c-id').value||slug(name);
+      var data={name:name,group:$('c-group').value,price:$('c-price').value.trim(),order:Number($('c-order').value)||0,blurb:$('c-blurb').value.trim()};
+      msg('c-msg','Saving…');
+      db.collection('categories').doc(id).set(data).then(function(){msg('c-msg','Saved "'+name+'".');resetCat()},function(err){msg('c-msg',errText(err),true)});
+    });
+    $('p-file').addEventListener('change',function(){
+      var f=this.files[0]; if(!f) return;
+      if(!assets){msg('p-msg','Logo uploads need editor access.',true);return}
+      msg('p-msg','Uploading logo…'); $('p-prev').textContent='Uploading…';
+      assets.upload(f).then(function(r){$('p-logo').value=r.id;$('p-prev').innerHTML='<img src="'+esc(r.url)+'" alt="Logo preview">';msg('p-msg','Logo uploaded. Save the sponsor to use it.')},function(err){$('p-prev').textContent='No logo';msg('p-msg','Upload failed: '+errText(err),true)});
+    });
+    $('sp-form').addEventListener('submit',function(e){
+      e.preventDefault(); var name=$('p-name').value.trim(); if(!name){msg('p-msg','Give the sponsor a brand name.',true);$('p-name').focus();return}
+      var url=$('p-url').value.trim(); if(url&&!/^https?:\/\//i.test(url)) url='https://'+url;
+      var data={name:name,url:url,logo:$('p-logo').value,order:Number($('p-order').value)||0,cats:[].slice.call(document.querySelectorAll('#p-cats input:checked')).map(function(i){return i.value})};
+      var id=$('p-id').value; msg('p-msg','Saving…');
+      var p=id?db.collection('sponsors').doc(id).set(data):db.collection('sponsors').add(data);
+      p.then(function(){msg('p-msg','Saved "'+name+'".');resetSp()},function(err){msg('p-msg',errText(err),true)});
+    });
+    $('adm').addEventListener('click',function(e){
+      var b=e.target.closest('button[data-act]'); if(!b) return; var id=b.dataset.id, act=b.dataset.act;
+      if(act==='edit-cat'){var c=catById(id);$('c-id').value=id;$('c-name').value=c.name;$('c-group').value=c.group||'tier';$('c-price').value=c.price||'';$('c-order').value=c.order||0;$('c-blurb').value=c.blurb||'';$('cat-form-title').textContent='Edit category';$('c-name').focus();return}
+      if(act==='edit-sp'){var s=SPONS.filter(function(x){return x.id===id})[0];$('p-id').value=id;$('p-name').value=s.name;$('p-url').value=s.url||'';$('p-logo').value=s.logo||'';$('p-order').value=s.order||0;$('p-prev').innerHTML=logoSrc(s)?'<img src="'+esc(logoSrc(s))+'" alt="Logo preview">':'No logo';[].slice.call(document.querySelectorAll('#p-cats input')).forEach(function(i){i.checked=(s.cats||[]).indexOf(i.value)>=0});$('sp-form-title').textContent='Edit sponsor';$('p-name').focus();return}
+      // delete: two-step confirm inside the button
+      if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm delete';setTimeout(function(){if(b.isConnected){b.dataset.armed='';b.textContent='Delete'}},4000);return}
+      var col=act==='del-cat'?'categories':'sponsors';
+      db.collection(col).doc(id).delete().catch(function(err){msg(act==='del-cat'?'c-msg':'p-msg',errText(err),true)});
+    });
+  }
+
+  function subscribe(){
+    var timer=setTimeout(function(){render()},10000);
+    db.collection('categories').onSnapshot(function(snap){clearTimeout(timer);live.cats=true;CATS=snap.empty?DEFAULT_CATEGORIES.slice():snap.docs.map(function(d){return Object.assign({},d.data(),{id:d.id})});render()},function(){render()});
+    db.collection('sponsors').onSnapshot(function(snap){live.spons=true;SPONS=snap.docs.map(function(d){return Object.assign({},d.data(),{id:d.id})});render()},function(){render()});
+  }
+
+  render();
+  var cl=window.claude;
+  if(cl&&cl.use){
+    Promise.all([cl.use('db'),cl.use('user'),cl.use('assets')]).then(function(r){
+      db=r[0]; var user=r[1]; assets=r[2];
+      if(!db){$('adm-gate').textContent='Sign in to manage sponsors.';return}
+      subscribe();
+      return (user?user.canEdit():Promise.resolve(false)).then(function(ok){
+        $('nav-admin').hidden=!ok;
+        if(ok){$('adm-gate').hidden=true;$('adm').hidden=false;wireAdmin();renderAdmin()}
+        else $('adm-gate').textContent='Only editors of this site can manage sponsors.';
+      });
+    }).catch(function(){$('adm-gate').textContent='The sponsor manager is unavailable right now.'});
+  } else {
+    $('adm-gate').textContent='Sponsors on this site are managed in the sponsors.json file. Add logos to the logos folder and reference them with logoUrl.';
+    if(location.protocol.indexOf('http')===0) fetch('sponsors.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;if(j.categories&&j.categories.length)CATS=j.categories;if(j.sponsors)SPONS=j.sponsors;render()}).catch(function(){});
+  }
+})();
+(function(){
+  var views=[].slice.call(document.querySelectorAll('[data-view]'));
+  var links=[].slice.call(document.querySelectorAll('nav.tabs a'));
+  function show(){
+    var id=(location.hash||'#home').slice(1);
+    if(!views.some(function(v){return v.dataset.view===id})) id='home';
+    views.forEach(function(v){v.hidden=v.dataset.view!==id});
+    links.forEach(function(a){ if(a.getAttribute('href')==='#'+id) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',show); show();
+
+  // Countdown to opening day: Thu 21 Jan 2027, 09:00 Sydney time (AEDT).
+  var start=new Date('2027-01-21T09:00:00+11:00').getTime(), cd=document.getElementById('countdown');
+  function tick(){
+    var ms=Math.max(0,start-Date.now()), d=Math.floor(ms/864e5), h=Math.floor(ms/36e5)%24, m=Math.floor(ms/6e4)%60;
+    cd.innerHTML=[[d,'days'],[h,'hours'],[m,'mins']].map(function(x){return '<div><b>'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join('');
+  }
+  tick(); setInterval(tick,30000);
+
+  function wire(formId,outId,title){
+    var f=document.getElementById(formId), out=document.getElementById(outId);
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var bad=[].slice.call(f.querySelectorAll('[required]')).filter(function(i){return !i.value.trim()||(i.type==='email'&&!/^\S+@\S+\.\S+$/.test(i.value))});
+      if(bad.length){ bad[0].focus(); out.hidden=false; out.innerHTML='<p class="notice">Please fill in '+bad.map(function(i){return i.parentNode.firstChild.textContent.trim().toLowerCase()}).join(', ')+'.</p>'; return; }
+      var txt=title+'\n'+[].slice.call(f.elements).filter(function(i){return i.name}).map(function(i){return i.name+': '+i.value}).join('\n');
+      out.hidden=false;
+      out.innerHTML='<p class="notice"><b>Thanks, your details are ready.</b> Online submission will be connected before launch. For now, copy the summary below and send it to the NSWRA office.</p><pre></pre><button class="btn ghost" type="button">Copy summary</button>';
+      out.querySelector('pre').textContent=txt;
+      var b=out.querySelector('button');
+      b.addEventListener('click',function(){
+        var done=function(){b.textContent='Copied'}, sel=function(){var r=document.createRange();r.selectNodeContents(out.querySelector('pre'));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected, press Ctrl+C'};
+        try{navigator.clipboard.writeText(txt).then(done,sel)}catch(err){sel()}
+      });
+    });
+  }
+  wire('interest','interest-out','NSWRA Kings 2027: register interest');
+  wire('sponsor','sponsor-out','NSWRA Kings 2027: sponsorship enquiry');
+})();
+</script>
+
+</body>
+</html>

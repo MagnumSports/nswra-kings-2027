@@ -1,0 +1,96 @@
+{
+  "_help": "Edit this file to change sponsors. categories: group is 'tier' or 'match'; blurb lines become benefits for tiers. sponsors: cats lists category ids; logoUrl points to a file in the logos folder.",
+  "categories": [
+    {
+      "id": "naming",
+      "group": "tier",
+      "name": "King's Prize Partner",
+      "price": "One available · POA",
+      "order": 1,
+      "blurb": "Naming rights to the King's Prize Final\nLogo on all entry, results and prize materials\nPresenting the trophy at prize-giving\nTrade site at the firing line\nFeature article and social posts"
+    },
+    {
+      "id": "gold",
+      "group": "tier",
+      "name": "Match Partner",
+      "price": "From $X,XXX (TBC)",
+      "order": 2,
+      "blurb": "Naming rights to a match or aggregate\nLogo on results pages for that match\nTrade site at the range\nSocial media mentions"
+    },
+    {
+      "id": "silver",
+      "group": "tier",
+      "name": "Range Partner",
+      "price": "From $X,XXX (TBC)",
+      "order": 3,
+      "blurb": "Banner at the firing points\nLogo on this website\nProduct in competitor packs"
+    },
+    {
+      "id": "bronze",
+      "group": "tier",
+      "name": "Supporter",
+      "price": "From $XXX or prizes in kind",
+      "order": 4,
+      "blurb": "Name on this website and the program\nPrize acknowledgement at prize-giving"
+    },
+    {
+      "id": "kings",
+      "group": "match",
+      "name": "King's Prize",
+      "order": 10,
+      "blurb": "Three stages and a final, ending with the chairing of the winner."
+    },
+    {
+      "id": "tr",
+      "group": "match",
+      "name": "Target Rifle",
+      "order": 11,
+      "blurb": "Sling-and-jacket fullbore with aperture sights, graded A, B and C."
+    },
+    {
+      "id": "fopen",
+      "group": "match",
+      "name": "F-Open",
+      "order": 12,
+      "blurb": "Scoped rifles shot from a front rest, open calibre."
+    },
+    {
+      "id": "ftr",
+      "group": "match",
+      "name": "F-TR",
+      "order": 13,
+      "blurb": "Scoped .308 or .223 rifles shot from a bipod."
+    },
+    {
+      "id": "sporter",
+      "group": "match",
+      "name": "F-Standard / SPC",
+      "order": 14,
+      "blurb": "Factory-style and service-pattern rifles. A great first step for hunters moving into target shooting."
+    },
+    {
+      "id": "teams",
+      "group": "match",
+      "name": "Teams matches",
+      "order": 15,
+      "blurb": "State, club and invitational teams on the same firing points."
+    },
+    {
+      "id": "grand",
+      "group": "match",
+      "name": "Grand Aggregate",
+      "order": 16,
+      "blurb": "The best overall score across the week, by class."
+    }
+  ],
+  "sponsors": [
+    {
+      "id": "magnum-sports",
+      "name": "Magnum Sports",
+      "url": "https://magnumsports.com.au",
+      "logoUrl": "logos/magnum-sports.png",
+      "order": 3,
+      "cats": []
+    }
+  ]
+}
