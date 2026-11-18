@@ -271,6 +271,27 @@ main{flex:1 0 auto}
 .hero-dots button[aria-current="true"]{background:var(--gold);border-color:var(--gold);opacity:1}
 @media (max-width:640px){.hero-slides::after{background:rgba(8,14,60,.78)}.hero-slides figcaption{display:none}}
 .shop-frame{height:calc(100dvh - 180px);min-height:600px}
+.timeline-wrap{margin:8px 0 40px;display:grid;gap:18px}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:3px solid var(--brass)}
+.timeline li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:14px 0 14px 22px;position:relative}
+.timeline li::before{content:"";position:absolute;left:-8px;top:20px;width:13px;height:13px;border-radius:50%;background:var(--brass);border:2px solid var(--bg)}
+.tl-when{font:700 1.15rem/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.03em}
+.timeline b{font:700 1.1rem/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:4px}
+.timeline p{color:var(--muted);max-width:80ch}
+.timeline sup.refs{font-size:.7em}
+@media (max-width:640px){.timeline li{grid-template-columns:1fr;gap:4px}}
+.shop-tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.shop-tools input{max-width:360px}.shop-tools select{width:auto}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:16px}
+.shop-card{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;text-decoration:none;color:var(--ink)}
+.shop-card:hover{border-color:var(--brass)}
+.shop-card .pic{aspect-ratio:1;background:#fff;display:grid;place-items:center;padding:12px}
+.shop-card .pic img{max-width:100%;max-height:100%;object-fit:contain}
+.shop-card .info{padding:12px 14px;display:grid;gap:6px;align-content:start}
+.shop-card .info b{font-weight:600;font-size:.95rem;line-height:1.3}
+.shop-card .info span{font:500 .95rem/1 var(--f-mono)}
+.shop-card .info em{font-style:normal;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.shop-card .info em.out{color:var(--flag)}
 </style>
 
 </head>
@@ -346,6 +367,15 @@ main{flex:1 0 auto}
         <p class="eyebrow">About the meeting</p>
         <h2>A championship with 150 meetings behind it</h2>
         <p>The NSWRA Open Championships have run since the nineteenth century. In June 2026 the Association marked its 150th meeting at Malabar. The 2027 meeting, the J G McIntosh Championships, opens the next 150, with the King's Prize as its centrepiece.</p>
+      </div>
+      <div class="timeline-wrap">
+        <h3>Historical Timeline</h3>
+        <ol class="timeline">
+          <li><span class="tl-when">1788</span><div><b>Founding under George III</b><p>Captain Arthur Phillip established the colony at Sydney Cove under the reign of <a href="https://www.google.com/search?kgmid=%2Fm%2F0bk4s&amp;q=King+George+III" target="_blank" rel="noopener">King George III</a>. The colony marked <a href="https://www.google.com/search?kgmid=%2Fm%2F0bk4s&amp;q=George+III%27s" target="_blank" rel="noopener">George III's</a> 50th birthday in June 1788 with gun salutes and a holiday. <sup class="refs">[<a href="https://www.governor.nsw.gov.au/governor/selected-speeches-and-messages/show/4263" target="_blank" rel="noopener">1</a>, <a href="https://en.wikipedia.org/wiki/New_South_Wales" target="_blank" rel="noopener">2</a>]</sup></p></div></li>
+          <li><span class="tl-when">1837–1901</span><div><b>Victorian Era &amp; Federation</b><p><a href="https://www.google.com/search?kgmid=%2Fm%2F0cw10&amp;q=Queen+Victoria" target="_blank" rel="noopener">Queen Victoria</a> reigned as the colony expanded, gained responsible government in 1855, and joined the federation to form the Commonwealth of Australia on 1 January 1901. <sup class="refs">[<a href="https://www.youtube.com/watch?v=Heh-NNmVRuc&amp;t=177" target="_blank" rel="noopener">1</a>, <a href="https://www.eoas.info/biogs/P006775b.htm" target="_blank" rel="noopener">2</a>, <a href="https://en.wikipedia.org/wiki/History_of_monarchy_in_Australia" target="_blank" rel="noopener">3</a>]</sup></p></div></li>
+          <li><span class="tl-when">1953–2022</span><div><b>Elizabeth II</b><p>In 1953, <a href="https://www.google.com/search?kgmid=%2Fm%2F0d1_f&amp;q=Queen+Elizabeth+II" target="_blank" rel="noopener">Queen Elizabeth II</a> was styled Queen of Australia. On 4 February 1954, she became the first reigning monarch to visit Australia and open the Parliament of New South Wales. <sup class="refs">[<a href="https://education.parliament.nsw.gov.au/understanding-the-role-of-the-crown-in-parliament/" target="_blank" rel="noopener">1</a>, <a href="https://en.wikipedia.org/wiki/History_of_monarchy_in_Australia" target="_blank" rel="noopener">2</a>]</sup></p></div></li>
+          <li><span class="tl-when">1986 &amp; Beyond</span><div><b>Constitutional Shift</b><p>The <a href="https://en.wikipedia.org/wiki/Governor_of_New_South_Wales" target="_blank" rel="noopener">Australia Act 1986</a> ended remaining British ministerial roles in Australian states, establishing the NSW Governor as the direct representative of the Australian monarch. <a href="https://www.google.com/search?kgmid=%2Fm%2F0xnc3&amp;q=King+Charles+III" target="_blank" rel="noopener">King Charles III</a> became monarch in September 2022. <sup class="refs">[<a href="https://en.wikipedia.org/wiki/Governor_of_New_South_Wales" target="_blank" rel="noopener">1</a>, <a href="https://en.wikipedia.org/wiki/Monarchy_of_Australia" target="_blank" rel="noopener">2</a>]</sup></p></div></li>
+        </ol>
       </div>
       <div class="grid3">
         <div class="card"><p class="eyebrow">Individual</p><h3>The King's Prize</h3><p>Three stages across the week. The top shooters from the qualifying stages go through to the final, shot at long range under championship conditions.</p></div>
@@ -603,13 +633,15 @@ main{flex:1 0 auto}
       <div class="head"><p class="eyebrow">NSWRA Shop</p><h2>Shop</h2><p>Ammunition, components, range supplies and NSWRA merchandise from the NSW Rifle Association shop at Malabar.</p></div>
       <div class="frame-block">
         <div class="frame-bar">
-          <div><h3>NSW Rifle Association Shop</h3><p class="src">nswra.org.au</p></div>
+          <div><h3>NSW Rifle Association Shop</h3><p class="src">Live from nswra.org.au · prices and stock as listed there · checkout on the NSWRA site</p></div>
           <a class="btn ghost" href="https://www.nswra.org.au/collections/all-products" target="_blank" rel="noopener">Open the shop ↗</a>
         </div>
-        <div class="frame shop-frame">
-          <div class="fallback"><b>The shop didn't load here</b><span>The shop may not allow embedding. Use the button above to open it in a new tab.</span></div>
-          <iframe src="https://www.nswra.org.au/collections/all-products" title="NSW Rifle Association Shop" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="shop-tools">
+          <input type="search" id="shop-q" placeholder="Search the shop" aria-label="Search the shop">
+          <select id="shop-cat" aria-label="Category"><option value="">All categories</option></select>
+          <span id="shop-count" class="adm-msg"></span>
         </div>
+        <div id="shop-grid" class="shop-grid"><p class="adm-msg">Loading products from the NSWRA shop…</p></div>
       </div>
     </section>
   </div>
@@ -933,6 +965,41 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
   sl.slice().forEach(function(f){ f.querySelector('img').addEventListener('error',function(){ var k=sl.indexOf(f); if(k<0||sl.length<2) return; var cur=sl[i]; sl.splice(k,1); dots[k].remove(); dots.splice(k,1); f.remove(); i=Math.max(0,sl.indexOf(cur)); if(cur===f){ i=k%sl.length; sl[i].classList.add('on'); dots[i].setAttribute('aria-current','true'); } }); });
   document.addEventListener('visibilitychange',function(){ document.hidden?stop():start(); });
   start();
+})();
+</script>
+<script>
+(function(){
+  var grid=document.getElementById('shop-grid'); if(!grid) return;
+  var q=document.getElementById('shop-q'), cat=document.getElementById('shop-cat'), cnt=document.getElementById('shop-count');
+  var BASE='https://www.nswra.org.au', all=[], loaded=false;
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function money(v){return '$'+Number(v).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function render(){
+    var term=q.value.trim().toLowerCase(), c=cat.value;
+    var list=all.filter(function(p){return (!c||p.product_type===c)&&(!term||(p.title+' '+p.vendor).toLowerCase().indexOf(term)>-1)});
+    cnt.textContent=list.length+' of '+all.length+' products';
+    grid.innerHTML=list.map(function(p){
+      var prices=p.variants.map(function(v){return +v.price}), lo=Math.min.apply(null,prices), hi=Math.max.apply(null,prices);
+      var avail=p.variants.some(function(v){return v.available}), img=p.images[0]&&p.images[0].src;
+      if(img) img=img.replace(/(\.[a-z]+)(\?|$)/i,'_400x$1$2');
+      return '<a class="shop-card" href="'+BASE+'/products/'+encodeURIComponent(p.handle)+'" target="_blank" rel="noopener"><div class="pic">'+(img?'<img loading="lazy" src="'+esc(img)+'" alt="">':'')+'</div><div class="info"><b>'+esc(p.title)+'</b><span>'+(lo===hi?'':'From ')+money(lo)+'</span><em class="'+(avail?'':'out')+'">'+(avail?esc(p.product_type||'In stock'):'Sold out')+'</em></div></a>';
+    }).join('')||'<p class="adm-msg">No products match.</p>';
+  }
+  async function load(){
+    if(loaded) return; loaded=true;
+    try{
+      for(var page=1;page<20;page++){
+        var r=await fetch(BASE+'/collections/all-products/products.json?limit=250&page='+page); if(!r.ok) throw r.status;
+        var j=await r.json(); all=all.concat(j.products); if(j.products.length<250) break;
+      }
+      var cats=[...new Set(all.map(function(p){return p.product_type}).filter(Boolean))].sort();
+      cat.innerHTML='<option value="">All categories</option>'+cats.map(function(c){return '<option>'+esc(c)+'</option>'}).join('');
+      render();
+    }catch(e){ grid.innerHTML='<p class="adm-msg err">The shop couldn\'t be loaded here. Use the button above to open it.</p>'; loaded=false; }
+  }
+  q.addEventListener('input',render); cat.addEventListener('change',render);
+  function check(){ if((location.hash||'')==='#shop') load(); }
+  window.addEventListener('hashchange',check); check();
 })();
 </script>
 </body>
