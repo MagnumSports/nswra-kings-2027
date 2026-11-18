@@ -203,6 +203,8 @@ fieldset.cats legend{font-weight:600;font-size:.9rem;padding:0 4px}
 .adm-head{background:transparent;border:0;padding-block:0;font:600 .72rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .adm-total{background:var(--brass-soft);border-color:var(--brass)}
 .adm-total .val{font-size:1.05rem}
+.gh-form{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:12px}
+.gh-form label{flex:1 1 260px}
 .adm-row .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .sm{font:600 .8rem/1 var(--f-body);padding:8px 10px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .sm.danger{color:var(--flag);border-color:currentColor}
@@ -761,7 +763,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
   function esc(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML}
   function byOrder(a,b){return (a.order||0)-(b.order||0)||String(a.name).localeCompare(b.name)}
   var DEMO_ASSETS={};
-  function logoSrc(s){if(s.logo&&String(s.logo).indexOf('demo:')===0)return DEMO_ASSETS[s.logo]||'';return s.logo?'/_blob/'+s.logo:(s.logoUrl||'')}
+  function logoSrc(s){if(s.logo&&String(s.logo).indexOf('demo:')===0)return DEMO_ASSETS[s.logo]||'';if(s.logo&&String(s.logo).indexOf('gh:')===0)return DEMO_ASSETS[s.logo]||String(s.logo).slice(3);return s.logo?'/_blob/'+s.logo:(s.logoUrl||'')}
   function catById(id){return CATS.filter(function(c){return c.id===id})[0]}
   function tierOf(s){var t=(s.cats||[]).map(catById).filter(function(c){return c&&c.group==='tier'}).sort(byOrder);return t[0]}
   function sponsorsIn(id){return SPONS.filter(function(s){return (s.cats||[]).indexOf(id)>=0}).sort(byOrder)}
@@ -846,41 +848,140 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     db.collection('sponsors').onSnapshot(function(snap){live.spons=true;SPONS=snap.docs.map(function(d){return Object.assign({},d.data(),{id:d.id})});render()},function(){render()});
   }
 
-  /* ---------- demo admin (static hosting: changes stay in this browser) ---------- */
+  /* ---------- static-site admin ----------
+     Without a GitHub connection: demo mode, changes stay in this browser.
+     Connected with a GitHub token: every change is saved to the repository, so it goes live for everyone.
+       Public data  -> MagnumSports/nswra-kings-2027 : sponsors.json + logos/
+       Private data -> MagnumSports/nswra-kings-2027-private : values.json (sponsorship values)  */
+  var GH={owner:'MagnumSports',repo:'nswra-kings-2027',privateRepo:'nswra-kings-2027-private',branch:'main'};
   function startDemo(){
-    var KEY='nswra-kings-2027-demo-v1', st=null, subs={categories:[],sponsors:[]};
+    var KEY='nswra-kings-2027-demo-v1', TKEY='nswra-kings-2027-gh-token', st=null, subs={categories:[],sponsors:[]};
+    var token=null, shas={}, syncTimer=null, syncing=false, again=false, statusEl=null;
+    try{token=localStorage.getItem(TKEY)||null}catch(e){}
     function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
-    function save(){try{localStorage.setItem(KEY,JSON.stringify(st));return true}catch(e){return false}}
+    function save(){try{localStorage.setItem(KEY,JSON.stringify(st));return true}catch(e){return !!token}}
     function snap(c){var o=st[c],ids=Object.keys(o);return {empty:!ids.length,docs:ids.map(function(id){return {id:id,data:function(){return o[id]}}})}}
     function fire(c){subs[c].forEach(function(f){f(snap(c))})}
-    function write(fn,c){fn();if(!save())return Promise.reject({message:'This browser could not save the demo (storage is full or blocked).'});fire(c);return Promise.resolve()}
+    function write(fn,c){fn();if(!save())return Promise.reject({message:'This browser could not save the demo (storage is full or blocked).'});fire(c);if(token)queueSync();return Promise.resolve()}
     function col(c){return {
       onSnapshot:function(f){subs[c].push(f);setTimeout(function(){f(snap(c))},0);return function(){}},
       doc:function(id){return {set:function(d){return write(function(){st[c][id]=d},c)},delete:function(){return write(function(){delete st[c][id]},c)}}},
       add:function(d){var id='s'+Date.now().toString(36);return write(function(){st[c][id]=d},c).then(function(){return {id:id}})}
     }}
     db={collection:col};
+
+    /* --- GitHub contents API --- */
+    function b64(str){return btoa(unescape(encodeURIComponent(str)))}
+    function unb64(s){return decodeURIComponent(escape(atob(String(s).replace(/\n/g,''))))}
+    function api(repo,path,opts){
+      opts=opts||{};
+      return fetch('https://api.github.com/repos/'+GH.owner+'/'+repo+'/contents/'+path+(opts.method?'':'?ref='+GH.branch),{
+        method:opts.method||'GET',cache:'no-store',
+        headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},
+        body:opts.body?JSON.stringify(opts.body):undefined
+      }).then(function(r){
+        if(r.status===404&&!opts.method)return null;
+        return r.json().catch(function(){return {}}).then(function(j){
+          if(!r.ok){var e=new Error(r.status===401?'GitHub rejected the token. Check it has not expired.':r.status===403||r.status===404?'The token cannot write to '+repo+'. Give it Contents: Read and write on that repository.':r.status===409||r.status===422?'conflict':(j.message||('GitHub error '+r.status)));e.status=r.status;throw e}
+          return j;
+        });
+      });
+    }
+    function getFile(repo,path){return api(repo,path).then(function(j){if(!j)return null;shas[repo+'/'+path]=j.sha;return j})}
+    function putFile(repo,path,contentB64,message,retried){
+      var key=repo+'/'+path, body={message:message,content:contentB64,branch:GH.branch};
+      if(shas[key])body.sha=shas[key];
+      return api(repo,path,{method:'PUT',body:body}).then(function(j){shas[key]=j.content&&j.content.sha;return j},function(e){
+        if(e.message==='conflict'&&!retried){delete shas[key];return getFile(repo,path).then(function(){return putFile(repo,path,contentB64,message,true)})}
+        throw e;
+      });
+    }
+    function publicJson(){
+      var cats=Object.keys(st.categories).map(function(id){return Object.assign({id:id},st.categories[id])});
+      var sps=Object.keys(st.sponsors).map(function(id){var x=Object.assign({id:id},st.sponsors[id]);delete x.value;
+        if(x.logo&&String(x.logo).indexOf('gh:')===0){x.logoUrl=x.logo.slice(3);delete x.logo}
+        else if(x.logo){var src=logoSrc(x);if(src)x.logoUrl=src;delete x.logo}
+        return x});
+      return {categories:cats,sponsors:sps};
+    }
+    function privateJson(){var v={};Object.keys(st.sponsors).forEach(function(id){var x=st.sponsors[id].value;if(x!==''&&x!=null)v[id]={name:st.sponsors[id].name,value:x}});return {values:v}}
+    function setStatus(t,err){if(statusEl){statusEl.textContent=t;statusEl.className='adm-msg'+(err?' err':'')}}
+    function queueSync(){clearTimeout(syncTimer);setStatus('Saving to the website…');syncTimer=setTimeout(sync,800)}
+    function sync(){
+      if(syncing){again=true;return}
+      syncing=true;
+      // upload any logo still held only in this browser
+      var pending=Object.keys(st.sponsors).filter(function(id){var l=st.sponsors[id].logo;return l&&String(l).indexOf('demo:')===0&&st.assets[l]});
+      var chain=Promise.resolve();
+      pending.forEach(function(id){chain=chain.then(function(){
+        var l=st.sponsors[id].logo, data=st.assets[l], m=/^data:([^;]+);base64,(.*)$/.exec(data);
+        if(!m)return;
+        var ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/svg+xml':'svg'})[m[1]]||'png';
+        var path='logos/'+id+'-'+Date.now().toString(36)+'.'+ext;
+        return putFile(GH.repo,path,m[2],'Add logo for '+st.sponsors[id].name).then(function(){var gid='gh:'+path;st.assets[gid]=data;st.sponsors[id].logo=gid;save()});
+      })});
+      chain.then(function(){
+        return putFile(GH.repo,'sponsors.json',b64(JSON.stringify(publicJson(),null,2)+'\n'),'Update sponsors from Admin');
+      }).then(function(){
+        return putFile(GH.privateRepo,'values.json',b64(JSON.stringify(privateJson(),null,2)+'\n'),'Update sponsorship values from Admin');
+      }).then(function(){
+        syncing=false; setStatus('Saved to the website at '+new Date().toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit'})+'. Visitors see it within about a minute.');
+        if(again){again=false;sync()}
+      },function(e){syncing=false;again=false;setStatus('Not saved to the website: '+e.message+' Your changes are kept in this browser; they will be saved with your next change.',true)});
+    }
+    function pullRemote(){
+      setStatus('Loading the latest sponsors from GitHub…');
+      return Promise.all([getFile(GH.repo,'sponsors.json'),getFile(GH.privateRepo,'values.json')]).then(function(r){
+        var pub=r[0]?JSON.parse(unb64(r[0].content)):null, priv=r[1]?JSON.parse(unb64(r[1].content)):{values:{}};
+        var assetsKeep=st&&st.assets||{};
+        st={categories:{},sponsors:{},assets:assetsKeep};
+        ((pub&&pub.categories&&pub.categories.length)?pub.categories:DEFAULT_CATEGORIES).forEach(function(c){var x=Object.assign({},c);delete x.id;st.categories[c.id]=x});
+        ((pub&&pub.sponsors)||[]).forEach(function(sp,k){var x=Object.assign({},sp),id=x.id||('s'+k);delete x.id;
+          if(x.logoUrl&&x.logoUrl.indexOf('logos/')===0){x.logo='gh:'+x.logoUrl;delete x.logoUrl}
+          var v=(priv.values||{})[id];if(v)x.value=v.value;st.sponsors[id]=x});
+        DEMO_ASSETS=st.assets; save(); fire('categories'); fire('sponsors');
+        setStatus('Connected. Every change you make is saved to the website.');
+      });
+    }
     assets={upload:function(f){return new Promise(function(res,rej){
-      if(f.size>1500000)return rej({message:'Keep demo logos under 1.5 MB.'});
+      if(f.size>1500000)return rej({message:'Keep logos under 1.5 MB.'});
       var r=new FileReader();
-      r.onload=function(){var id='demo:'+Date.now().toString(36);st.assets[id]=r.result;DEMO_ASSETS=st.assets;if(!save()){delete st.assets[id];return rej({message:'This browser could not store the logo.'})}res({id:id,url:r.result})};
+      r.onload=function(){var id='demo:'+Date.now().toString(36);st.assets[id]=r.result;DEMO_ASSETS=st.assets;if(!save()&&!token){delete st.assets[id];return rej({message:'This browser could not store the logo.'})}res({id:id,url:r.result})};
       r.onerror=function(){rej({message:'Could not read that file.'})};
       r.readAsDataURL(f);
     })}};
     function exportJson(){
-      var cats=Object.keys(st.categories).map(function(id){return Object.assign({id:id},st.categories[id])});
-      var sps=Object.keys(st.sponsors).map(function(id){var x=Object.assign({id:id},st.sponsors[id]);delete x.value;if(x.logo){var src=logoSrc(x);if(src)x.logoUrl=src;delete x.logo}return x});
-      var blob=new Blob([JSON.stringify({categories:cats,sponsors:sps},null,2)],{type:'application/json'});
+      var blob=new Blob([JSON.stringify(publicJson(),null,2)],{type:'application/json'});
       var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sponsors.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    }
+    function panel(){
+      var g=$('adm-gate');
+      if(token){
+        g.innerHTML='<b>Saving to the website is on.</b> Every change here is saved to GitHub and goes live for all visitors. Sponsorship values are saved privately and never published. <span class="adm-msg" id="gh-status" role="status"></span><span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="gh-reload">Reload from GitHub</button><button class="sm danger" type="button" id="gh-off">Disconnect this browser</button></span>';
+        $('gh-reload').onclick=function(){pullRemote().catch(function(e){setStatus(e.message,true)})};
+        $('gh-off').onclick=function(){var b=this;if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm disconnect';return}try{localStorage.removeItem(TKEY)}catch(e){}location.reload()};
+      } else {
+        g.innerHTML='<b>Demo mode.</b> Changes you make here are saved only in this browser. To save them to the live website for everyone, connect GitHub with an access token. <form id="gh-form" class="gh-form" novalidate><label for="gh-token">GitHub access token<input id="gh-token" type="password" autocomplete="off" placeholder="github_pat_…"></label><button class="sm" type="submit">Connect and save to website</button></form><span class="adm-msg" id="gh-status" role="status"></span><span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="demo-export">Export sponsors.json</button><button class="sm danger" type="button" id="demo-reset">Reset demo</button></span>';
+        $('demo-export').onclick=exportJson;
+        $('demo-reset').onclick=function(){var b=this;if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm reset';return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
+        $('gh-form').addEventListener('submit',function(e){
+          e.preventDefault(); var t=$('gh-token').value.trim(); if(!t){setStatus('Paste your GitHub access token first.',true);return}
+          token=t; setStatus('Checking the token…');
+          getFile(GH.repo,'sponsors.json').then(function(){return getFile(GH.privateRepo,'values.json')}).then(function(){
+            try{localStorage.setItem(TKEY,t)}catch(err){}
+            panel(); return pullRemote();
+          }).catch(function(err){token=null;setStatus(err.message,true)});
+        });
+      }
+      statusEl=$('gh-status');
     }
     function begin(){
       DEMO_ASSETS=st.assets;
       $('nav-admin').hidden=false;
       var g=$('adm-gate');
-      g.innerHTML='<b>Demo mode.</b> Changes you make here are saved only in this browser, so other visitors still see the published sponsors. To publish them, export the file and replace <code>sponsors.json</code> in the GitHub repository. Sponsorship values stay private: they are left out of the export, because sponsors.json is public. <span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="demo-export">Export sponsors.json</button><button class="sm danger" type="button" id="demo-reset">Reset demo</button></span>';
-      $('demo-export').onclick=exportJson;
-      $('demo-reset').onclick=function(){var b=this;if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm reset';return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
-      $('adm').hidden=false; $('adm').after(g); g.style.margin='32px 0 0'; wireAdmin(); subscribe(); renderAdmin();
+      $('adm').hidden=false; $('adm').after(g); g.style.margin='32px 0 0';
+      panel(); wireAdmin(); subscribe(); renderAdmin();
+      if(token) pullRemote().catch(function(e){setStatus(e.message+' Showing the copy saved in this browser.',true)});
     }
     st=load();
     if(st&&st.categories&&st.sponsors){st.assets=st.assets||{};begin();return}
@@ -888,11 +989,10 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     src.then(function(j){
       st={categories:{},sponsors:{},assets:{}};
       ((j&&j.categories&&j.categories.length)?j.categories:DEFAULT_CATEGORIES).forEach(function(c){var x=Object.assign({},c);delete x.id;st.categories[c.id]=x});
-      ((j&&j.sponsors)?j.sponsors:DEFAULT_SPONSORS).forEach(function(sp,k){var x=Object.assign({},sp);var id=x.id||('s'+k);delete x.id;st.sponsors[id]=x});
+      ((j&&j.sponsors)?j.sponsors:DEFAULT_SPONSORS).forEach(function(sp,k){var x=Object.assign({},sp);var id=x.id||('s'+k);delete x.id;if(x.logoUrl&&x.logoUrl.indexOf('logos/')===0){x.logo='gh:'+x.logoUrl;delete x.logoUrl}st.sponsors[id]=x});
       begin();
     });
   }
-
   render();
   var cl=window.claude;
   if(cl&&cl.use){
