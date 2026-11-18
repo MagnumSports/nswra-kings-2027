@@ -197,11 +197,17 @@ fieldset.cats legend{font-weight:600;font-size:.9rem;padding:0 4px}
 .adm-row .meta{min-width:0}
 .adm-row .meta b{display:block}
 .adm-row .meta span{font-size:.85rem;color:var(--muted)}
+.adm-row.sp{grid-template-columns:72px minmax(0,1fr) 130px auto}
+.adm-row .val{text-align:right;font-variant-numeric:tabular-nums}
+.adm-row .val .none{color:var(--muted);font-family:var(--f-body);font-size:.85rem}
+.adm-head{background:transparent;border:0;padding-block:0;font:600 .72rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.adm-total{background:var(--brass-soft);border-color:var(--brass)}
+.adm-total .val{font-size:1.05rem}
 .adm-row .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .sm{font:600 .8rem/1 var(--f-body);padding:8px 10px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .sm.danger{color:var(--flag);border-color:currentColor}
 @media (max-width:900px){.adm-grid{grid-template-columns:1fr}}
-@media (max-width:640px){.adm-row{grid-template-columns:56px minmax(0,1fr)}.adm-row .acts{grid-column:1/-1;justify-content:flex-start}.logo-row{grid-template-columns:90px minmax(0,1fr)}}
+@media (max-width:640px){.adm-row{grid-template-columns:56px minmax(0,1fr)}.adm-row .acts{grid-column:1/-1;justify-content:flex-start}.adm-row.sp{grid-template-columns:56px minmax(0,1fr) auto}.adm-row.sp .acts{grid-column:1/-1}.adm-head{display:none}.logo-row{grid-template-columns:90px minmax(0,1fr)}}
 
 /* contact & footer */
 dl.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 20px;margin:0}
@@ -582,7 +588,7 @@ footer p{opacity:.75}
   <div class="wrap">
     <section class="band">
       <div class="head"><p class="eyebrow">Admin</p><h2>Sponsor manager</h2><p>Add sponsor categories and sponsors, and upload brand logos. Changes show on the site straight away.</p></div>
-      <p class="notice" id="adm-gate">Checking your access…</p>
+      <p class="notice" id="adm-gate" style="margin-bottom:20px">Checking your access…</p>
       <div id="adm" hidden>
         <div class="adm-grid">
           <div class="card">
@@ -615,7 +621,10 @@ footer p{opacity:.75}
                 <label for="p-file">Brand logo (PNG, JPG, SVG)<input id="p-file" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
               </div>
               <fieldset class="cats"><legend>Categories</legend><div id="p-cats"></div></fieldset>
-              <label for="p-order">Display order<input id="p-order" type="number" value="10"></label>
+              <div class="row">
+                <label for="p-value">Sponsorship value (AUD, ex GST)<input id="p-value" type="number" min="0" step="50" inputmode="decimal" placeholder="e.g. 2500"></label>
+                <label for="p-order">Display order<input id="p-order" type="number" value="10"></label>
+              </div>
               <div class="adm-actions"><button class="btn" type="submit">Save sponsor</button><button class="btn ghost" type="button" id="p-reset">Clear</button></div>
               <p class="adm-msg" id="p-msg" role="status"></p>
             </form>
@@ -699,11 +708,12 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
   function msg(id,t,err){var m=$(id);m.textContent=t;m.className='adm-msg'+(err?' err':'')}
   function errText(e){return (e&&(e.message||e.code))||'Something went wrong. Try again.'}
   function slug(t){var b=String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'item',id=b,n=2;while(catById(id))id=b+'-'+(n++);return id}
+  function money(n){return '$'+Number(n||0).toLocaleString('en-AU',{minimumFractionDigits:0,maximumFractionDigits:2})}
   function renderAdmin(){
     if($('adm').hidden) return;
     var checked=[].slice.call(document.querySelectorAll('#p-cats input:checked')).map(function(i){return i.value});
     $('p-cats').innerHTML=CATS.map(function(c){return '<label><input type="checkbox" value="'+esc(c.id)+'"'+(checked.indexOf(c.id)>=0?' checked':'')+'> '+esc(c.name)+'</label>'}).join('');
-    $('sp-list').innerHTML=SPONS.length?SPONS.map(function(s){var src=logoSrc(s);return '<div class="adm-row"><div class="thumb">'+(src?'<img src="'+esc(src)+'" alt="">':'No logo')+'</div><div class="meta"><b>'+esc(s.name)+'</b><span>'+esc((s.cats||[]).map(function(id){var c=catById(id);return c?c.name:null}).filter(Boolean).join(' · ')||'No category')+'</span></div><div class="acts"><button class="sm" data-act="edit-sp" data-id="'+esc(s.id)+'">Edit</button><button class="sm danger" data-act="del-sp" data-id="'+esc(s.id)+'">Delete</button></div></div>'}).join(''):'<p class="notice">No sponsors yet. Add the first one with the form above.</p>';
+    var total=0;$('sp-list').innerHTML=SPONS.length?'<div class="adm-row adm-head sp"><span></span><span>Sponsor</span><span class="val">Value</span><span></span></div>'+SPONS.map(function(s){var src=logoSrc(s),v=Number(s.value)||0;total+=v;return '<div class="adm-row sp"><div class="thumb">'+(src?'<img src="'+esc(src)+'" alt="">':'No logo')+'</div><div class="meta"><b>'+esc(s.name)+'</b><span>'+esc((s.cats||[]).map(function(id){var c=catById(id);return c?c.name:null}).filter(Boolean).join(' · ')||'No category')+'</span></div><div class="val mono">'+(s.value===''||s.value==null?'<span class="none">Not set</span>':money(v))+'</div><div class="acts"><button class="sm" data-act="edit-sp" data-id="'+esc(s.id)+'">Edit</button><button class="sm danger" data-act="del-sp" data-id="'+esc(s.id)+'">Delete</button></div></div>'}).join('')+'<div class="adm-row adm-total sp"><span></span><b>Total ('+SPONS.length+' sponsor'+(SPONS.length===1?'':'s')+')</b><b class="val mono">'+money(total)+'</b><span></span></div>':'<p class="notice">No sponsors yet. Add the first one with the form above.</p>';
     $('cat-list').innerHTML=CATS.map(function(c){var n=sponsorsIn(c.id).length;return '<div class="adm-row"><div class="thumb">'+(c.group==='tier'?'Tier':'Match')+'</div><div class="meta"><b>'+esc(c.name)+'</b><span>'+n+' sponsor'+(n===1?'':'s')+(c.price?' · '+esc(c.price):'')+'</span></div><div class="acts"><button class="sm" data-act="edit-cat" data-id="'+esc(c.id)+'">Edit</button><button class="sm danger" data-act="del-cat" data-id="'+esc(c.id)+'">Delete</button></div></div>'}).join('');
   }
   function resetCat(){$('cat-form').reset();$('c-id').value='';$('cat-form-title').textContent='New category'}
@@ -728,7 +738,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     $('sp-form').addEventListener('submit',function(e){
       e.preventDefault(); var name=$('p-name').value.trim(); if(!name){msg('p-msg','Give the sponsor a brand name.',true);$('p-name').focus();return}
       var url=$('p-url').value.trim(); if(url&&!/^https?:\/\//i.test(url)) url='https://'+url;
-      var data={name:name,url:url,logo:$('p-logo').value,order:Number($('p-order').value)||0,cats:[].slice.call(document.querySelectorAll('#p-cats input:checked')).map(function(i){return i.value})};
+      var data={name:name,url:url,logo:$('p-logo').value,order:Number($('p-order').value)||0,value:$('p-value').value===''?'':Math.max(0,Number($('p-value').value)||0),cats:[].slice.call(document.querySelectorAll('#p-cats input:checked')).map(function(i){return i.value})};
       var id=$('p-id').value; if(id&&!data.logo){var prev=SPONS.filter(function(x){return x.id===id})[0];if(prev&&prev.logoUrl)data.logoUrl=prev.logoUrl} msg('p-msg','Saving…');
       var p=id?db.collection('sponsors').doc(id).set(data):db.collection('sponsors').add(data);
       p.then(function(){msg('p-msg','Saved "'+name+'".');resetSp()},function(err){msg('p-msg',errText(err),true)});
@@ -736,7 +746,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     $('adm').addEventListener('click',function(e){
       var b=e.target.closest('button[data-act]'); if(!b) return; var id=b.dataset.id, act=b.dataset.act;
       if(act==='edit-cat'){var c=catById(id);$('c-id').value=id;$('c-name').value=c.name;$('c-group').value=c.group||'tier';$('c-price').value=c.price||'';$('c-order').value=c.order||0;$('c-blurb').value=c.blurb||'';$('cat-form-title').textContent='Edit category';$('c-name').focus();return}
-      if(act==='edit-sp'){var s=SPONS.filter(function(x){return x.id===id})[0];$('p-id').value=id;$('p-name').value=s.name;$('p-url').value=s.url||'';$('p-logo').value=s.logo||'';$('p-order').value=s.order||0;$('p-prev').innerHTML=logoSrc(s)?'<img src="'+esc(logoSrc(s))+'" alt="Logo preview">':'No logo';[].slice.call(document.querySelectorAll('#p-cats input')).forEach(function(i){i.checked=(s.cats||[]).indexOf(i.value)>=0});$('sp-form-title').textContent='Edit sponsor';$('p-name').focus();return}
+      if(act==='edit-sp'){var s=SPONS.filter(function(x){return x.id===id})[0];$('p-id').value=id;$('p-name').value=s.name;$('p-url').value=s.url||'';$('p-logo').value=s.logo||'';$('p-order').value=s.order||0;$('p-value').value=(s.value===''||s.value==null)?'':s.value;$('p-prev').innerHTML=logoSrc(s)?'<img src="'+esc(logoSrc(s))+'" alt="Logo preview">':'No logo';[].slice.call(document.querySelectorAll('#p-cats input')).forEach(function(i){i.checked=(s.cats||[]).indexOf(i.value)>=0});$('sp-form-title').textContent='Edit sponsor';$('p-name').focus();return}
       // delete: two-step confirm inside the button
       if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm delete';setTimeout(function(){if(b.isConnected){b.dataset.armed='';b.textContent='Delete'}},4000);return}
       var col=act==='del-cat'?'categories':'sponsors';
@@ -773,7 +783,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     })}};
     function exportJson(){
       var cats=Object.keys(st.categories).map(function(id){return Object.assign({id:id},st.categories[id])});
-      var sps=Object.keys(st.sponsors).map(function(id){var x=Object.assign({id:id},st.sponsors[id]);if(x.logo){var src=logoSrc(x);if(src)x.logoUrl=src;delete x.logo}return x});
+      var sps=Object.keys(st.sponsors).map(function(id){var x=Object.assign({id:id},st.sponsors[id]);delete x.value;if(x.logo){var src=logoSrc(x);if(src)x.logoUrl=src;delete x.logo}return x});
       var blob=new Blob([JSON.stringify({categories:cats,sponsors:sps},null,2)],{type:'application/json'});
       var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sponsors.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
     }
@@ -781,7 +791,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
       DEMO_ASSETS=st.assets;
       $('nav-admin').hidden=false;
       var g=$('adm-gate');
-      g.innerHTML='<b>Demo mode.</b> Changes you make here are saved only in this browser, so other visitors still see the published sponsors. To publish them, export the file and replace <code>sponsors.json</code> in the GitHub repository. <span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="demo-export">Export sponsors.json</button><button class="sm danger" type="button" id="demo-reset">Reset demo</button></span>';
+      g.innerHTML='<b>Demo mode.</b> Changes you make here are saved only in this browser, so other visitors still see the published sponsors. To publish them, export the file and replace <code>sponsors.json</code> in the GitHub repository. Sponsorship values stay private: they are left out of the export, because sponsors.json is public. <span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="demo-export">Export sponsors.json</button><button class="sm danger" type="button" id="demo-reset">Reset demo</button></span>';
       $('demo-export').onclick=exportJson;
       $('demo-reset').onclick=function(){var b=this;if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm reset';return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
       $('adm').hidden=false; wireAdmin(); subscribe(); renderAdmin();
