@@ -298,6 +298,12 @@ dd .social{margin-top:0}
 .social a:hover{opacity:1}
 .shop-card .pic{overflow:hidden}
 .shop-card .pic img{width:100%;height:100%}
+.main-spons{display:grid;gap:10px}
+.ms-item{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);text-decoration:none;color:var(--ink)}
+.ms-item:hover{border-color:var(--brass)}
+.ms-item img{max-width:72px;max-height:36px;object-fit:contain;justify-self:center}
+.ms-item b{font:700 .95rem/1.1 var(--f-display);text-transform:uppercase;grid-column:1/-1}
+.ms-item span{font-weight:600;font-size:.92rem}
 </style>
 
 </head>
@@ -390,21 +396,6 @@ dd .social{margin-top:0}
       </div>
     </section>
 
-    <section class="band">
-      <div class="head">
-        <p class="eyebrow">On the range</p>
-        <h2>Distances shot at Malabar</h2>
-        <p>Matches are shot at standard fullbore distances. Exact distances per stage will be published with the official program.</p>
-      </div>
-      <div class="yards" aria-label="Distances">
-        <div><b class="mono">300</b><span>metres</span></div>
-        <div><b class="mono">400</b><span>metres</span></div>
-        <div><b class="mono">500</b><span>metres</span></div>
-        <div><b class="mono">600</b><span>metres</span></div>
-        <div><b class="mono">700</b><span>metres</span></div>
-        <div><b class="mono">800</b><span>metres</span></div>
-      </div>
-    </section>
 
     <section class="band">
       <div class="grid2">
@@ -789,7 +780,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     [].slice.call(tk.children).slice(items.length).forEach(function(a){a.setAttribute('aria-hidden','true');a.tabIndex=-1});
     tk.style.setProperty('--tick-dur',Math.max(25,items.length*5)+'s');
     // tier cards
-    $('tiers').innerHTML=tiers.map(function(t,i){var b=String(t.blurb||'').split('\n').filter(Boolean);return '<div class="tier'+(i===0?' lead':'')+'"><p class="name">'+esc(t.name)+'</p>'+(t.price?'<p class="price">'+esc(t.price)+'</p>':'')+(b.length?'<ul class="bene">'+b.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'')+'</div>'}).join('');
+    $('tiers').innerHTML=tiers.map(function(t,i){var b=String(t.blurb||'').split('\n').filter(Boolean);var main=i===0?sponsorsIn(t.id):[];if(main.length)return '<div class="tier lead"><p class="name">'+esc(t.name)+'s</p><p class="price">Our main sponsors</p><div class="main-spons">'+main.map(function(s){return link(s,logoOrName(s)+'<span>'+esc(s.name)+'</span>','ms-item')}).join('')+'</div></div>';return '<div class="tier'+(i===0?' lead':'')+'"><p class="name">'+esc(t.name)+'</p>'+(t.price?'<p class="price">'+esc(t.price)+'</p>':'')+(b.length?'<ul class="bene">'+b.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'')+'</div>'}).join('');
     // partner wall
     $('wall').innerHTML=SPONS.slice().sort(function(a,b){var ta=tierOf(a),tb=tierOf(b);return ((ta?ta.order:99)-(tb?tb.order:99))||byOrder(a,b)}).map(function(s){var t=tierOf(s);return link(s,logoOrName(s)+'<span>'+esc(t?t.name:'Partner')+'</span>','wall-item')}).join('')+'<a class="wall-item open" href="#sponsors"><b>Your brand</b><span>Enquire below</span></a>';
     // match & discipline cards
