@@ -257,6 +257,8 @@ main{flex:1 0 auto}
 @media (min-width:1400px){body{font-size:17px}.grid2{gap:48px}}
 @media (min-width:1900px){body{font-size:18px}}
 @media (max-width:900px){.hero{min-height:0}.hero-mark{max-width:260px}}
+.map-embed{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);height:clamp(320px,55vh,640px)}
+.map-embed iframe{border:0;width:100%;height:100%;display:block}
 </style>
 
 </head>
@@ -352,6 +354,18 @@ main{flex:1 0 auto}
         <div><b class="mono">700</b><span>metres</span></div>
         <div><b class="mono">800</b><span>metres</span></div>
       </div>
+    </section>
+
+    <section class="band">
+      <div class="head">
+        <p class="eyebrow">Getting there</p>
+        <h2>ANZAC Rifle Range, Malabar</h2>
+        <p>Franklin Street, Malabar NSW. Use the map to plan your trip, or open it in Google Maps for directions.</p>
+      </div>
+      <div class="map-embed">
+        <iframe src="https://www.google.com/maps?q=ANZAC+Rifle+Range,+Franklin+Street,+Malabar+NSW+2036&z=15&output=embed" title="Map: ANZAC Rifle Range, Malabar" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <p style="margin-top:16px"><a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&destination=ANZAC+Rifle+Range+Franklin+Street+Malabar+NSW" target="_blank" rel="noopener">Get directions</a></p>
     </section>
 
     <section class="band">
