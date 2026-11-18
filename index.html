@@ -581,7 +581,7 @@ footer p{opacity:.75}
 <section class="view" data-view="admin" hidden>
   <div class="wrap">
     <section class="band">
-      <div class="head"><p class="eyebrow">Admin</p><h2>Sponsor manager</h2><p>Add sponsor categories and sponsors, and upload brand logos. Changes show on the site straight away for everyone.</p></div>
+      <div class="head"><p class="eyebrow">Admin</p><h2>Sponsor manager</h2><p>Add sponsor categories and sponsors, and upload brand logos. Changes show on the site straight away.</p></div>
       <p class="notice" id="adm-gate">Checking your access…</p>
       <div id="adm" hidden>
         <div class="adm-grid">
@@ -665,7 +665,8 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
   function $(id){return document.getElementById(id)}
   function esc(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML}
   function byOrder(a,b){return (a.order||0)-(b.order||0)||String(a.name).localeCompare(b.name)}
-  function logoSrc(s){return s.logo?'/_blob/'+s.logo:(s.logoUrl||'')}
+  var DEMO_ASSETS={};
+  function logoSrc(s){if(s.logo&&String(s.logo).indexOf('demo:')===0)return DEMO_ASSETS[s.logo]||'';return s.logo?'/_blob/'+s.logo:(s.logoUrl||'')}
   function catById(id){return CATS.filter(function(c){return c.id===id})[0]}
   function tierOf(s){var t=(s.cats||[]).map(catById).filter(function(c){return c&&c.group==='tier'}).sort(byOrder);return t[0]}
   function sponsorsIn(id){return SPONS.filter(function(s){return (s.cats||[]).indexOf(id)>=0}).sort(byOrder)}
@@ -728,7 +729,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
       e.preventDefault(); var name=$('p-name').value.trim(); if(!name){msg('p-msg','Give the sponsor a brand name.',true);$('p-name').focus();return}
       var url=$('p-url').value.trim(); if(url&&!/^https?:\/\//i.test(url)) url='https://'+url;
       var data={name:name,url:url,logo:$('p-logo').value,order:Number($('p-order').value)||0,cats:[].slice.call(document.querySelectorAll('#p-cats input:checked')).map(function(i){return i.value})};
-      var id=$('p-id').value; msg('p-msg','Saving…');
+      var id=$('p-id').value; if(id&&!data.logo){var prev=SPONS.filter(function(x){return x.id===id})[0];if(prev&&prev.logoUrl)data.logoUrl=prev.logoUrl} msg('p-msg','Saving…');
       var p=id?db.collection('sponsors').doc(id).set(data):db.collection('sponsors').add(data);
       p.then(function(){msg('p-msg','Saved "'+name+'".');resetSp()},function(err){msg('p-msg',errText(err),true)});
     });
@@ -749,6 +750,53 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
     db.collection('sponsors').onSnapshot(function(snap){live.spons=true;SPONS=snap.docs.map(function(d){return Object.assign({},d.data(),{id:d.id})});render()},function(){render()});
   }
 
+  /* ---------- demo admin (static hosting: changes stay in this browser) ---------- */
+  function startDemo(){
+    var KEY='nswra-kings-2027-demo-v1', st=null, subs={categories:[],sponsors:[]};
+    function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
+    function save(){try{localStorage.setItem(KEY,JSON.stringify(st));return true}catch(e){return false}}
+    function snap(c){var o=st[c],ids=Object.keys(o);return {empty:!ids.length,docs:ids.map(function(id){return {id:id,data:function(){return o[id]}}})}}
+    function fire(c){subs[c].forEach(function(f){f(snap(c))})}
+    function write(fn,c){fn();if(!save())return Promise.reject({message:'This browser could not save the demo (storage is full or blocked).'});fire(c);return Promise.resolve()}
+    function col(c){return {
+      onSnapshot:function(f){subs[c].push(f);setTimeout(function(){f(snap(c))},0);return function(){}},
+      doc:function(id){return {set:function(d){return write(function(){st[c][id]=d},c)},delete:function(){return write(function(){delete st[c][id]},c)}}},
+      add:function(d){var id='s'+Date.now().toString(36);return write(function(){st[c][id]=d},c).then(function(){return {id:id}})}
+    }}
+    db={collection:col};
+    assets={upload:function(f){return new Promise(function(res,rej){
+      if(f.size>1500000)return rej({message:'Keep demo logos under 1.5 MB.'});
+      var r=new FileReader();
+      r.onload=function(){var id='demo:'+Date.now().toString(36);st.assets[id]=r.result;DEMO_ASSETS=st.assets;if(!save()){delete st.assets[id];return rej({message:'This browser could not store the logo.'})}res({id:id,url:r.result})};
+      r.onerror=function(){rej({message:'Could not read that file.'})};
+      r.readAsDataURL(f);
+    })}};
+    function exportJson(){
+      var cats=Object.keys(st.categories).map(function(id){return Object.assign({id:id},st.categories[id])});
+      var sps=Object.keys(st.sponsors).map(function(id){var x=Object.assign({id:id},st.sponsors[id]);if(x.logo){var src=logoSrc(x);if(src)x.logoUrl=src;delete x.logo}return x});
+      var blob=new Blob([JSON.stringify({categories:cats,sponsors:sps},null,2)],{type:'application/json'});
+      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sponsors.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    }
+    function begin(){
+      DEMO_ASSETS=st.assets;
+      $('nav-admin').hidden=false;
+      var g=$('adm-gate');
+      g.innerHTML='<b>Demo mode.</b> Changes you make here are saved only in this browser, so other visitors still see the published sponsors. To publish them, export the file and replace <code>sponsors.json</code> in the GitHub repository. <span class="adm-actions" style="margin-top:10px"><button class="sm" type="button" id="demo-export">Export sponsors.json</button><button class="sm danger" type="button" id="demo-reset">Reset demo</button></span>';
+      $('demo-export').onclick=exportJson;
+      $('demo-reset').onclick=function(){var b=this;if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm reset';return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
+      $('adm').hidden=false; wireAdmin(); subscribe(); renderAdmin();
+    }
+    st=load();
+    if(st&&st.categories&&st.sponsors){st.assets=st.assets||{};begin();return}
+    var src=(location.protocol.indexOf('http')===0)?fetch('sponsors.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}):Promise.resolve(null);
+    src.then(function(j){
+      st={categories:{},sponsors:{},assets:{}};
+      ((j&&j.categories&&j.categories.length)?j.categories:DEFAULT_CATEGORIES).forEach(function(c){var x=Object.assign({},c);delete x.id;st.categories[c.id]=x});
+      ((j&&j.sponsors)?j.sponsors:DEFAULT_SPONSORS).forEach(function(sp,k){var x=Object.assign({},sp);var id=x.id||('s'+k);delete x.id;st.sponsors[id]=x});
+      begin();
+    });
+  }
+
   render();
   var cl=window.claude;
   if(cl&&cl.use){
@@ -763,8 +811,7 @@ var DEFAULT_SPONSORS=[ /* e.g. {id:'acme', name:'Acme Optics', url:'https://…'
       });
     }).catch(function(){$('adm-gate').textContent='The sponsor manager is unavailable right now.'});
   } else {
-    $('adm-gate').textContent='Sponsors on this site are managed in the sponsors.json file. Add logos to the logos folder and reference them with logoUrl.';
-    if(location.protocol.indexOf('http')===0) fetch('sponsors.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;if(j.categories&&j.categories.length)CATS=j.categories;if(j.sponsors)SPONS=j.sponsors;render()}).catch(function(){});
+    startDemo();
   }
 })();
 (function(){
